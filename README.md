@@ -18,21 +18,21 @@ These are the steps to get you up and running:
  - Browse to your user defined packages (Preferences > Browse Packages...).
  - Modify the SublimeOnSaveBuild.sublime-settings file to include coffee in its filename_filter. the file should look like this:
 
-  	{
-	    "filename_filter": "\\.(css|js|coffee|sass|less|scss|jade)$",
-	    "build_on_save": 1
-	}
+    {
+        "filename_filter": "\\.(css|js|coffee|sass|less|scss|jade)$",
+        "build_on_save": 1
+    }
 
  - In sublime text now go to Tools > Build System > New Build System, which will create an empty build system. Paste the following code into the file and save it:
 
-	 {
-	    "cmd": [
-	    	"coffee", "--compile", "--output", "./../bin", "$file"
-	    ],
-	    "path": "/usr/local/bin:$PATH",
-	    "working_dir": "$file_path",
-	    "selector": "source.coffee"
-	}
+    {
+        "cmd": [
+            "coffee", "--compile", "--output", "./../bin", "$file"
+        ],
+        "path": "/usr/local/bin:$PATH",
+        "working_dir": "$file_path",
+        "selector": "source.coffee"
+    }
 
  - You should now be all set up and ready to contribute to the project!
 
