@@ -1,0 +1,12 @@
+{
+	"name": "playlist-everything-fbplayer",
+	"version": "0.0.1",
+	"dependencies": {
+		"express": "x.x.x"
+	},
+	"devDependencies": {
+		"jade": "x.x.x",
+		"stylus": "x.x.x",
+		"coffee-script": "x.x.x"
+	}
+}
