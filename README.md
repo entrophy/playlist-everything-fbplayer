@@ -14,7 +14,7 @@ These are the steps to get you up and running:
 ## CoffeeScript build system
 
  - Install the sublime text package manager (if you haven't already, go for it, its great! http://wbond.net/sublime_packages/package_control).
- - Install the SublimeOnSaveBuild package.
+ - Install the SublimeOnSaveBuild package through the package manager.
  - Browse to your user defined packages (Preferences > Browse Packages...).
  - Modify the SublimeOnSaveBuild.sublime-settings file to include coffee in its filename_filter. the file should look like this:
 
