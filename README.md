@@ -27,8 +27,8 @@ An alternative to using the sublime text build system for coffeescript is to jus
 
         {
            "cmd": [
-                        "coffee", "--compile", "--output", "./../bin", "$file"
-                ],
+                    "coffee", "--compile", "--output", "./../bin", "$file"
+            ],
             "path": "/usr/local/bin:$PATH",
             "working_dir": "$file_path",
             "selector": "source.coffee"
