@@ -11,7 +11,7 @@ These are the steps to get you up and running:
 
 (An alternative to using the sublime text build system for coffeescript is to just run the coffee compiler from the commandline).
 
-# CoffeeScript build system
+## CoffeeScript build system
 
  - Install the sublime text package manager (if you haven't already, go for it, its great! http://wbond.net/sublime_packages/package_control).
  - Install the SublimeOnSaveBuild package.
