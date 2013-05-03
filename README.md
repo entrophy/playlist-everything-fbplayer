@@ -9,7 +9,7 @@ These are the steps to get you up and running:
  - Setup sublime text build system for coffeescript.
  - Voila! you should be good to go.
 
-(An alternative to using the sublime text build system for coffeescript is to just run the coffee compiler from the commandline).
+An alternative to using the sublime text build system for coffeescript is to just run the coffee compiler from the commandline.
 
 ## CoffeeScript build system
 
@@ -36,9 +36,9 @@ These are the steps to get you up and running:
 
  - You should now be all set up and ready to contribute to the project!
 
-(Important! The build system above is designed for unix systems. If you are on windows, it will probably be somewhat different. Catch us on our IRC channel if you need any help).
+**Important!** The build system above is designed for unix systems. If you are on windows, it will probably be somewhat different. Catch us on our IRC channel if you need any help.
 
-(Another! Important! Notice! If you have any coffeescript package installed already in sublime, as for example the "CoffeeScript" package for neat syntax highlighting and stuff, you will probably have a build system reacting to coffeescript source files already. If you would like to use our build system, remember to comment out the existing coffeescript build system so they won't collide.)
+**Another! Important! Notice!** If you have any coffeescript package installed already in sublime, as for example the "CoffeeScript" package for neat syntax highlighting and stuff, you will probably have a build system reacting to coffeescript source files already. If you would like to use our build system, remember to comment out the existing coffeescript build system so they won't collide.
 
 ## Contribute? Chat? Yell at us? Drink a beer?
 
