@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html data-ng-app="PlaylistEverythingFacebookPlayer">
   <head>
     <title>Playlist Everything Facebook Player</title>
     <link href="/css/lib/bootstrap.css" rel="stylesheet" type="text/css">
@@ -7,7 +7,41 @@
     <link href="/css/app.css" rel="stylesheet" type="text/css">
   </head>
   <body>
-    <h1>Playlist Everything Facebook Player </h1>
+    <div id="fb-root"></div>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span12">&nbsp;</div>
+      </div>
+      <div data-ng-controller="UrlSearchCtrl" class="row-fluid">
+        <div class="span2">&nbsp;</div>
+        <div class="span8">
+          <div class="box url-search">
+            <h4>Create a playlist</h4>
+            <input id="url-search" type="text" placeholder="Paste a Facebook group or page url ..." tabindex="1" autofocus data-ng-model="url" data-ng-change="change()" class="input-block-level">
+          </div>
+          <div data-ng-show="invalid" style="display: none;" class="box facebook-invalid">
+            <h4>The url provided seems invalid</h4>
+          </div>
+          <div data-ng-show="private" style="display: none;" class="box facebook-login">
+            <h4>This page or group requires facebook login</h4>
+            <fb:login-button id="fb-button"></fb:login-button>
+          </div>
+        </div>
+        <div class="span2">&nbsp;</div>
+      </div>
+      <div data-ng-controller="SongListCtrl" class="row-fluid">
+        <div class="span2">&nbsp;</div>
+        <div class="span8">
+          <ul class="box-list song-list">
+            <li data-ng-repeat="song in songs">{{song.title}}</li>
+          </ul>
+        </div>
+        <div class="span2">&nbsp;</div>
+      </div>
+    </div>
+    <script src="/script/lib/underscore.js"></script>
+    <script src="/script/lib/jquery.js"></script>
+    <script src="/script/lib/angular.js"></script>
     <script src="/script/app.js"></script>
   </body>
 </html>

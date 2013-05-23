@@ -1,2 +1,50 @@
+@import 'nib'
+
+html, body
+	height: 100%
+
 body
-	background: url('/image/background.png')
+	background: url('/image/backgrounds/crowd.jpg') center center
+	overflow-y: scroll
+
+.box
+	background: rgba(255, 255, 255, 0.6)
+	margin: 0px 0px 8px 0px
+
+	h4
+		margin: 0px 0px 6px 0px
+
+ul.box-list
+	margin: 0px
+	padding: 0px
+	list-style-type: none
+
+	li 
+		background: rgba(255, 255, 255, 0.6)
+		margin: 0px 0px 1px 0px
+		padding: 0px
+
+ul.song-list
+	li
+		padding: 6px 8px
+
+.url-search
+	padding: 6px 8px 8px 8px
+
+.facebook-login
+	padding: 6px 8px 8px 8px
+
+.facebook-invalid
+	padding: 6px 8px 2px 8px
+
+input[type="text"]
+	border-radius 0px
+	box-shadow: none
+	padding: 8px 12px
+	margin: 0px
+	min-height: auto
+	height: auto
+
+	&:focus
+		border-color: rgba(255, 153, 0, 0.8)
+		box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 153, 0, 0.6)

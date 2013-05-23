@@ -1,12 +1,44 @@
 !!! 5
-html
+html(data-ng-app="PlaylistEverythingFacebookPlayer")
 	head
 		title Playlist Everything Facebook Player
 
 		link(href="/css/lib/bootstrap.css", rel="stylesheet", type="text/css")
 		link(href="/css/lib/bootstrap-responsive.css", rel="stylesheet", type="text/css")
 		link(href="/css/app.css", rel="stylesheet", type="text/css")
-	body
-		h1 Playlist Everything Facebook Player 
 
+	body
+		#fb-root
+		.container-fluid
+			.row-fluid
+				.span12 &nbsp;
+
+			.row-fluid(data-ng-controller="UrlSearchCtrl")
+				.span2 &nbsp;
+				.span8
+					.box.url-search
+						h4 Create a playlist
+						input#url-search.input-block-level(type="text", placeholder="Paste a Facebook group or page url ...", tabindex="1", autofocus, data-ng-model="url", data-ng-change="change()")
+
+					.box.facebook-invalid(data-ng-show="invalid", style="display: none;")
+						h4 The url provided seems invalid
+
+					.box.facebook-login(data-ng-show="private", style="display: none;")
+						h4 This page or group requires facebook login
+					
+						fb:login-button#fb-button
+
+				.span2 &nbsp;
+
+			.row-fluid(data-ng-controller="SongListCtrl")
+				.span2 &nbsp;
+				.span8
+					ul.box-list.song-list
+						li(data-ng-repeat="song in songs") {{song.title}}
+						
+				.span2 &nbsp;
+
+		script(src="/script/lib/underscore.js")
+		script(src="/script/lib/jquery.js")
+		script(src="/script/lib/angular.js")
 		script(src="/script/app.js")

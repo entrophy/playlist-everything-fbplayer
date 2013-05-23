@@ -7,6 +7,7 @@
 	"devDependencies": {
 		"jade": "x.x.x",
 		"stylus": "x.x.x",
+		"nib": "x.x.x",
 		"coffee-script": "x.x.x"
 	}
 }
