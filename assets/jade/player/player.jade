@@ -1,0 +1,35 @@
+!!! 5
+html
+	head
+		title Player
+
+		link(href="/css/lib/bootstrap.css", rel="stylesheet", type="text/css")
+		link(href="/css/lib/bootstrap-responsive.css", rel="stylesheet", type="text/css")
+
+	body
+		#player
+
+		.clear-fix
+		a#prev.btn Prev
+		a#play.btn Play
+		a#pause.btn Pause
+		a#stop.btn Stop
+		a#next.btn Next
+
+		//- iframe#scplayer(width="100%", height="166", scrolling="no", frameborder="no", src="https://w.soundcloud.com/player/?url=")
+
+		//- .clear-fix
+		//- a#scplay.btn Play
+		//- a#scpause.btn Pause
+		//- a#scstop.btn Stop
+		
+		script(src="https://w.soundcloud.com/player/api.js")
+		script(src="https://www.youtube.com/player_api")
+
+		script(src="/script/lib/jquery.js")
+
+		script(src="/script/player.abstract.js")
+		script(src="/script/player.youtube.js")
+		script(src="/script/player.soundcloud.js")
+
+		script(src="/script/player.js")
