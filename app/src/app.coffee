@@ -25,8 +25,11 @@ app.configure () ->
 app.get '/fb-channel', (req, res, next) ->
 	res.render('util/fb-channel')
 
+app.get '/player', (req, res, next) ->
+	res.render('player/player')
+
 app.get '*', (req, res, next) ->
 	res.render('index')
 
-app.listen 3000, () ->
-	console.log "listening on port 3000"
+app.listen (process.env.VCAP_APP_PORT || 3000), () ->
+	console.log "listening on port " + (process.env.VCAP_APP_PORT || 3000)

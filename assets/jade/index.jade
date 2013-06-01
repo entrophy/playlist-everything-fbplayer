@@ -9,36 +9,81 @@ html(data-ng-app="PlaylistEverythingFacebookPlayer")
 
 	body
 		#fb-root
-		.container-fluid
-			.row-fluid
-				.span12 &nbsp;
 
-			.row-fluid(data-ng-controller="UrlSearchCtrl")
-				.span2 &nbsp;
-				.span8
-					.box.url-search
-						h4 Create a playlist
-						input#url-search.input-block-level(type="text", placeholder="Paste a Facebook group or page url ...", tabindex="1", autofocus, data-ng-model="url", data-ng-change="change()")
+		#queue-wrapper
+			.container-fluid
+				.row-fluid
+					.span12 &nbsp;
 
-					.box.facebook-invalid(data-ng-show="invalid", style="display: none;")
-						h4 The url provided seems invalid
+				.row-fluid(data-ng-controller="PageCtrl")
+					.span8.offset2
+						.box.search(data-ng-show="visible.search")
+							h4 Create a playlist
+							form(data-ng-submit="loadPage()")
+								input#url-search.span11.pull-left(type="text", placeholder="Paste a Facebook group or page url and press enter...", tabindex="1", autofocus, data-ng-model="url")
+								a.btn.btn-success.pull-right(href="", data-ng-click="loadPage()") Go!
 
-					.box.facebook-login(data-ng-show="private", style="display: none;")
-						h4 This page or group requires facebook login
-					
-						fb:login-button#fb-button
+								input.fake-submit(type="submit", hidefocus)
 
-				.span2 &nbsp;
+						.box.page(data-ng-show="visible.page", style="display: none;")
+							h2 {{page.name}}
+							p {{page.about}}
 
-			.row-fluid(data-ng-controller="SongListCtrl")
-				.span2 &nbsp;
-				.span8
-					ul.box-list.song-list
-						li(data-ng-repeat="song in songs") {{song.title}}
+							a.close(href="", data-ng-click="unloadPage()") &times;
+
+						.box.facebook-invalid(data-ng-show="visible.invalid", style="display: none;")
+							h4 The url provided seems invalid
+
+						.box.facebook-login(data-ng-show="visible.private", style="display: none;")
+							h4 This page or group requires facebook login
 						
-				.span2 &nbsp;
+							fb:login-button#fb-button
+
+				.row-fluid(data-ng-controller="SongsCtrl")
+					.span8.offset2
+						ul.box-list.song-list
+							li(data-ng-repeat="song in songs") 
+								span.title {{song.title}}
+								span.origin {{song.origin}}
+
+						.preloader(data-ng-show="visible.loading", style="display: none;")
+
+		#player-wrapper
+			.container-fluid
+				.row-fluid
+					.span4.offset2
+						#buttons
+							a#prev.btn.btn-large
+								i.icon-fast-backward
+							a#play.btn.btn-large
+								i.icon-play
+							a#pause.btn.btn-large
+								i.icon-pause
+							a#stop.btn.btn-large
+								i.icon-stop
+							a#next.btn.btn-large
+								i.icon-fast-forward
+
+					.span4
+						.player
+							.prevent
+							#player
+							.background
+
+		
+		script(src="https://w.soundcloud.com/player/api.js")
+		script(src="https://www.youtube.com/player_api")
 
 		script(src="/script/lib/underscore.js")
 		script(src="/script/lib/jquery.js")
 		script(src="/script/lib/angular.js")
+
+
+		script(src="/script/player.abstract.js")
+		script(src="/script/player.youtube.js")
+		script(src="/script/player.soundcloud.js")
+
+		script(src="/script/service.fb.js")
+		script(src="/script/service.song.js")
+		script(src="/script/model.song.js")
 		script(src="/script/app.js")

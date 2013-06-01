@@ -32,12 +32,16 @@
     return res.render('util/fb-channel');
   });
 
+  app.get('/player', function(req, res, next) {
+    return res.render('player/player');
+  });
+
   app.get('*', function(req, res, next) {
     return res.render('index');
   });
 
-  app.listen(3000, function() {
-    return console.log("listening on port 3000");
+  app.listen(process.env.VCAP_APP_PORT || 3000, function() {
+    return console.log("listening on port " + (process.env.VCAP_APP_PORT || 3000));
   });
 
 }).call(this);
