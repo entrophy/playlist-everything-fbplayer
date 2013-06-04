@@ -31,5 +31,5 @@ app.get '/player', (req, res, next) ->
 app.get '*', (req, res, next) ->
 	res.render('index')
 
-app.listen (process.env.VCAP_APP_PORT || 3000), () ->
-	console.log "listening on port " + (process.env.VCAP_APP_PORT || 3000)
+app.listen (process.env.VCAP_APP_PORT || 80), () ->
+	console.log "listening on port " + (process.env.VCAP_APP_PORT || 80)

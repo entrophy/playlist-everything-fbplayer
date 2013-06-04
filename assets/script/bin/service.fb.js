@@ -86,8 +86,11 @@
           }
           return callback(err, posts);
         } else {
-          _this._nextUrl = response.paging.next;
-          posts = _this._posts = _this._posts.concat(response.data);
+          console.log(response.paging);
+          if (response.paging) {
+            _this._nextUrl = response.paging.next;
+          }
+          posts = response.data;
           return callback(err, posts);
         }
       });

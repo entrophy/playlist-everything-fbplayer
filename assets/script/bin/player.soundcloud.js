@@ -15,7 +15,10 @@
     PlayerSoundcloud.prototype.load = function(url, callback) {
       this.create();
       this._player = SC.Widget($('#pe-player-soundcloud')[0]);
-      this._player.load(url, {
+      this._player.bind(SC.Widget.Events.READY, function() {
+        return callback();
+      });
+      return this._player.load(url, {
         show_comments: false,
         liking: false,
         sharing: false,
@@ -25,9 +28,6 @@
         show_playcount: false,
         show_comments: false,
         show_user: false
-      });
-      return this._player.bind(SC.Widget.Events.READY, function() {
-        return callback();
       });
     };
 

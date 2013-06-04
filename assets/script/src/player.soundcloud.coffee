@@ -4,16 +4,12 @@ class @PlayerSoundcloud extends @PlayerAbstract
 
 	element: (@id) ->
 
-	#element: (@element) ->
-		#@_player = SC.Widget(@element)
-
 	load: (url, callback) ->
-		#@element.style.display = 'block'
-
 		@create()
-		#$('#pe-player-soundcloud').show()
-
 		@_player = SC.Widget($('#pe-player-soundcloud')[0])
+
+		@_player.bind SC.Widget.Events.READY, () ->
+			callback()
 
 		@_player.load url, {
 			show_comments: false,
@@ -26,9 +22,6 @@ class @PlayerSoundcloud extends @PlayerAbstract
 			show_comments: false,
 			show_user: false
 		}
-
-		@_player.bind SC.Widget.Events.READY, () ->
-			callback()
 
 	finish: (callback) ->
 		@_player.bind SC.Widget.Events.FINISH, callback
@@ -52,9 +45,8 @@ class @PlayerSoundcloud extends @PlayerAbstract
 		elem.attr('scrolling', 'no')
 		elem.attr('width', '100%')
 		elem.attr('height', '200')
-		#elem.hide()
 
-		$('#' + @id).append(elem);
+		$('#' + @id).append(elem)
 
 	destroy: () ->
 		console.log "soundcloud destroy"

@@ -1,6 +1,14 @@
 Playlist Everything Facebook Player
 ===
 
+## Remember
+
+To setup this address in your /etc/hosts, when developing locally.
+
+        127.0.0.1	playlisteverything.eu01.aws.af.cm
+
+## Whoa. This readme is no good.
+
 ## Setting up the Development Environment
 
 These are the steps to get you up and running:

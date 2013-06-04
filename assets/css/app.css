@@ -7,7 +7,7 @@ body {
   overflow-y: scroll;
 }
 #queue-wrapper {
-  padding-bottom: 240px;
+  padding-bottom: 260px;
 }
 #player-wrapper {
   position: fixed;
@@ -63,6 +63,19 @@ body {
   height: 48px;
   width: 48px;
   margin: 16px auto;
+  opacity: 0.6;
+  filter: alpha(opacity=60);
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
+}
+#preloader {
+  position: absolute;
+  background: url("/image/preloader.gif");
+  height: 48px;
+  width: 48px;
+  top: 50%;
+  left: 50%;
+  margin-top: -24px;
+  margin-left: -24px;
   opacity: 0.6;
   filter: alpha(opacity=60);
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
@@ -125,6 +138,11 @@ ul.song-list li span.origin {
 .search form,
 .facebook-login form {
   margin: 0px;
+}
+.more a {
+  display: block;
+  padding: 6px 8px 8px 8px;
+  text-align: center;
 }
 .facebook-invalid {
   padding: 6px 8px 2px 8px;

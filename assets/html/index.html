@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-ng-app="PlaylistEverythingFacebookPlayer">
+<html>
   <head>
     <title>Playlist Everything Facebook Player</title>
     <link href="/css/lib/bootstrap.css" rel="stylesheet" type="text/css">
@@ -7,71 +7,92 @@
     <link href="/css/app.css" rel="stylesheet" type="text/css">
   </head>
   <body>
-    <div id="fb-root"></div>
-    <div id="queue-wrapper">
-      <div class="container-fluid">
-        <div class="row-fluid">
-          <div class="span12">&nbsp;</div>
-        </div>
-        <div data-ng-controller="PageCtrl" class="row-fluid">
-          <div class="span8 offset2">
-            <div data-ng-show="visible.search" class="box search">
-              <h4>Create a playlist</h4>
-              <form data-ng-submit="loadPage()">
-                <input id="url-search" type="text" placeholder="Paste a Facebook group or page url and press enter..." tabindex="1" autofocus data-ng-model="url" class="span11 pull-left"><a href="" data-ng-click="loadPage()" class="btn btn-success pull-right">Go!</a>
-                <input type="submit" hidefocus class="fake-submit">
-              </form>
-            </div>
-            <div data-ng-show="visible.page" style="display: none;" class="box page">
-              <h2>{{page.name}}</h2>
-              <p>{{page.about}}</p><a href="" data-ng-click="unloadPage()" class="close">&times;</a>
-            </div>
-            <div data-ng-show="visible.invalid" style="display: none;" class="box facebook-invalid">
-              <h4>The url provided seems invalid</h4>
-            </div>
-            <div data-ng-show="visible.private" style="display: none;" class="box facebook-login">
-              <h4>This page or group requires facebook login</h4>
-              <fb:login-button id="fb-button"></fb:login-button>
+    <div id="preloader"></div>
+    <div id="wrapper" style="display: none;">
+      <div id="fb-root"></div>
+      <div id="queue-wrapper">
+        <div class="container-fluid">
+          <div class="row-fluid">
+            <div class="span12">&nbsp;</div>
+          </div>
+          <div data-ng-controller="PageCtrl" class="row-fluid">
+            <div class="span8 offset2">
+              <div data-ng-show="visible.search" class="box search">
+                <h4>Create a playlist</h4>
+                <form data-ng-submit="loadPage()">
+                  <input id="url-search" type="text" placeholder="Paste a Facebook group or page url and press enter..." tabindex="1" autofocus data-ng-model="url" class="span11 pull-left"><a href="" data-ng-click="loadPage()" class="btn btn-success pull-right">Go!</a>
+                  <input type="submit" hidefocus class="fake-submit">
+                </form>
+              </div>
+              <div data-ng-show="visible.page" style="display: none;" class="box page">
+                <h2 data-ng-bind="page.name"></h2>
+                <p data-ng-bind="page.about"></p><a href="" data-ng-click="unloadPage()" class="close">&times;</a>
+              </div>
+              <div data-ng-show="visible.invalid" style="display: none;" class="box facebook-invalid">
+                <h4>The url provided seems invalid</h4>
+              </div>
+              <div data-ng-show="visible.private" style="display: none;" class="box facebook-login">
+                <h4>This page or group requires facebook login</h4>
+                <fb:login-button id="fb-button"></fb:login-button>
+              </div>
+              <div data-ng-show="visible.loading" style="display: none;" class="preloader"></div>
             </div>
           </div>
-        </div>
-        <div data-ng-controller="SongsCtrl" class="row-fluid">
-          <div class="span8 offset2">
-            <ul class="box-list song-list">
-              <li data-ng-repeat="song in songs"> <span class="title">{{song.title}}</span><span class="origin">{{song.origin}}</span></li>
-            </ul>
-            <div data-ng-show="visible.loading" style="display: none;" class="preloader"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div id="player-wrapper">
-      <div class="container-fluid">
-        <div class="row-fluid">
-          <div class="span4 offset2">
-            <div id="buttons"><a id="prev" class="btn btn-large"><i class="icon-fast-backward"></i></a><a id="play" class="btn btn-large"><i class="icon-play"></i></a><a id="pause" class="btn btn-large"><i class="icon-pause"></i></a><a id="stop" class="btn btn-large"><i class="icon-stop"></i></a><a id="next" class="btn btn-large"><i class="icon-fast-forward"></i></a></div>
-          </div>
-          <div class="span4">
-            <div class="player">
-              <div class="prevent"></div>
-              <div id="player"></div>
-              <div class="background"></div>
+          <div data-ng-controller="SongCtrl" class="row-fluid">
+            <div class="span8 offset2">
+              <ul class="box-list song-list">
+                <li data-ng-repeat="song in songs"> <span data-ng-bind="song.title" class="title"></span><span data-ng-bind="song.origin" class="origin"></span></li>
+              </ul>
+              <div data-ng-show="visible.more" style="display: none;" class="more box"><a href="" data-ng-click="loadPosts()">Load more songs</a></div>
+              <div data-ng-show="visible.loading" style="display: none;" class="preloader"></div>
             </div>
           </div>
         </div>
       </div>
+      <div id="player-wrapper">
+        <div class="container-fluid">
+          <div class="row-fluid">
+            <div data-ng-controller="ControlsCtrl" class="span4 offset2">
+              <div id="buttons"><a data-ng-click="prev()" class="btn btn-large"><i class="icon-fast-backward"></i></a><a data-ng-click="play()" class="btn btn-large"><i class="icon-play"></i></a><a data-ng-click="pause()" class="btn btn-large"><i class="icon-pause"></i></a><a data-ng-click="stop()" class="btn btn-large"><i class="icon-stop"></i></a><a data-ng-click="next()" class="btn btn-large"><i class="icon-fast-forward"></i></a></div>
+            </div>
+            <div class="span4">
+              <div class="player">
+                <div class="prevent"></div>
+                <div id="player"></div>
+                <div class="background"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <script src="https://w.soundcloud.com/player/api.js"></script>
-    <script src="https://www.youtube.com/player_api"></script>
-    <script src="/script/lib/underscore.js"></script>
-    <script src="/script/lib/jquery.js"></script>
-    <script src="/script/lib/angular.js"></script>
-    <script src="/script/player.abstract.js"></script>
-    <script src="/script/player.youtube.js"></script>
-    <script src="/script/player.soundcloud.js"></script>
+    <script>
+      var require = {
+       paths: {
+        jquery: "/script/lib/jquery",
+        underscore: "/script/lib/underscore",
+        angular: "/script/lib/angular",
+        
+        // soundcloud: "//www.soundcloud.com/player/api",
+        // youtube: "//www.youtube.com/player_api?noext",
+        // facebook: "//connect.facebook.net/en_US/all",
+        
+        youtube: "/script/lib/youtube",
+        facebook: "/script/lib/facebook",
+        soundcloud: "/script/lib/soundcloud"
+       },
+       urlArgs: Math.random()
+      };
+      
+    </script>
     <script src="/script/service.fb.js"></script>
-    <script src="/script/service.song.js"></script>
     <script src="/script/model.song.js"></script>
-    <script src="/script/app.js"></script>
+    <script src="/script/urlparser.js"></script>
+    <script src="/script/player.abstract.js"></script>
+    <script src="/script/player.soundcloud.js"></script>
+    <script src="/script/player.youtube.js"></script>
+    <script src="/script/player.js"></script>
+    <script src="/script/queue.js"></script>
+    <script data-main="script/app" src="script/lib/require.js"></script>
   </body>
 </html>

@@ -1,5 +1,5 @@
 !!! 5
-html(data-ng-app="PlaylistEverythingFacebookPlayer")
+html
 	head
 		title Playlist Everything Facebook Player
 
@@ -8,82 +8,103 @@ html(data-ng-app="PlaylistEverythingFacebookPlayer")
 		link(href="/css/app.css", rel="stylesheet", type="text/css")
 
 	body
-		#fb-root
-
-		#queue-wrapper
-			.container-fluid
-				.row-fluid
-					.span12 &nbsp;
-
-				.row-fluid(data-ng-controller="PageCtrl")
-					.span8.offset2
-						.box.search(data-ng-show="visible.search")
-							h4 Create a playlist
-							form(data-ng-submit="loadPage()")
-								input#url-search.span11.pull-left(type="text", placeholder="Paste a Facebook group or page url and press enter...", tabindex="1", autofocus, data-ng-model="url")
-								a.btn.btn-success.pull-right(href="", data-ng-click="loadPage()") Go!
-
-								input.fake-submit(type="submit", hidefocus)
-
-						.box.page(data-ng-show="visible.page", style="display: none;")
-							h2 {{page.name}}
-							p {{page.about}}
-
-							a.close(href="", data-ng-click="unloadPage()") &times;
-
-						.box.facebook-invalid(data-ng-show="visible.invalid", style="display: none;")
-							h4 The url provided seems invalid
-
-						.box.facebook-login(data-ng-show="visible.private", style="display: none;")
-							h4 This page or group requires facebook login
-						
-							fb:login-button#fb-button
-
-				.row-fluid(data-ng-controller="SongsCtrl")
-					.span8.offset2
-						ul.box-list.song-list
-							li(data-ng-repeat="song in songs") 
-								span.title {{song.title}}
-								span.origin {{song.origin}}
-
-						.preloader(data-ng-show="visible.loading", style="display: none;")
-
-		#player-wrapper
-			.container-fluid
-				.row-fluid
-					.span4.offset2
-						#buttons
-							a#prev.btn.btn-large
-								i.icon-fast-backward
-							a#play.btn.btn-large
-								i.icon-play
-							a#pause.btn.btn-large
-								i.icon-pause
-							a#stop.btn.btn-large
-								i.icon-stop
-							a#next.btn.btn-large
-								i.icon-fast-forward
-
-					.span4
-						.player
-							.prevent
-							#player
-							.background
+		#preloader
+		#wrapper(style="display: none;")
 
 		
-		script(src="https://w.soundcloud.com/player/api.js")
-		script(src="https://www.youtube.com/player_api")
+			#fb-root
 
-		script(src="/script/lib/underscore.js")
-		script(src="/script/lib/jquery.js")
-		script(src="/script/lib/angular.js")
+			#queue-wrapper
+				.container-fluid
+					.row-fluid
+						.span12 &nbsp;
 
+					.row-fluid(data-ng-controller="PageCtrl")
+						.span8.offset2
+							.box.search(data-ng-show="visible.search")
+								h4 Create a playlist
+								form(data-ng-submit="loadPage()")
+									input#url-search.span11.pull-left(type="text", placeholder="Paste a Facebook group or page url and press enter...", tabindex="1", autofocus, data-ng-model="url")
+									a.btn.btn-success.pull-right(href="", data-ng-click="loadPage()") Go!
 
-		script(src="/script/player.abstract.js")
-		script(src="/script/player.youtube.js")
-		script(src="/script/player.soundcloud.js")
+									input.fake-submit(type="submit", hidefocus)
+
+							.box.page(data-ng-show="visible.page", style="display: none;")
+								h2(data-ng-bind="page.name")
+								p(data-ng-bind="page.about")
+
+								a.close(href="", data-ng-click="unloadPage()") &times;
+
+							.box.facebook-invalid(data-ng-show="visible.invalid", style="display: none;")
+								h4 The url provided seems invalid
+
+							.box.facebook-login(data-ng-show="visible.private", style="display: none;")
+								h4 This page or group requires facebook login
+							
+								fb:login-button#fb-button
+
+							.preloader(data-ng-show="visible.loading", style="display: none;")
+
+					.row-fluid(data-ng-controller="SongCtrl")
+						.span8.offset2
+							ul.box-list.song-list
+								li(data-ng-repeat="song in songs") 
+									span.title(data-ng-bind="song.title")
+									span.origin(data-ng-bind="song.origin")
+
+							.more.box(data-ng-show="visible.more", style="display: none;")
+								a(href="", data-ng-click="loadPosts()") Load more songs
+
+							.preloader(data-ng-show="visible.loading", style="display: none;")
+
+			#player-wrapper
+				.container-fluid
+					.row-fluid
+						.span4.offset2(data-ng-controller="ControlsCtrl")
+							#buttons
+								a.btn.btn-large(data-ng-click="prev()")
+									i.icon-fast-backward
+								a.btn.btn-large(data-ng-click="play()")
+									i.icon-play
+								a.btn.btn-large(data-ng-click="pause()")
+									i.icon-pause
+								a.btn.btn-large(data-ng-click="stop()")
+									i.icon-stop
+								a.btn.btn-large(data-ng-click="next()")
+									i.icon-fast-forward
+
+						.span4
+							.player
+								.prevent
+								#player
+								.background
+
+		script
+			var require = {
+				paths: {
+					jquery: "/script/lib/jquery",
+					underscore: "/script/lib/underscore",
+					angular: "/script/lib/angular",
+
+					// soundcloud: "//www.soundcloud.com/player/api",
+					// youtube: "//www.youtube.com/player_api?noext",
+					// facebook: "//connect.facebook.net/en_US/all",
+
+					youtube: "/script/lib/youtube",
+					facebook: "/script/lib/facebook",
+					soundcloud: "/script/lib/soundcloud"
+				},
+				urlArgs: Math.random()
+			};
 
 		script(src="/script/service.fb.js")
-		script(src="/script/service.song.js")
 		script(src="/script/model.song.js")
-		script(src="/script/app.js")
+
+		script(src="/script/urlparser.js")
+		script(src="/script/player.abstract.js")
+		script(src="/script/player.soundcloud.js")
+		script(src="/script/player.youtube.js")
+		script(src="/script/player.js")
+		script(src="/script/queue.js")
+
+		script(data-main="script/app", src="script/lib/require.js")

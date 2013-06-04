@@ -40,8 +40,8 @@
     return res.render('index');
   });
 
-  app.listen(process.env.VCAP_APP_PORT || 3000, function() {
-    return console.log("listening on port " + (process.env.VCAP_APP_PORT || 3000));
+  app.listen(process.env.VCAP_APP_PORT || 80, function() {
+    return console.log("listening on port " + (process.env.VCAP_APP_PORT || 80));
   });
 
 }).call(this);

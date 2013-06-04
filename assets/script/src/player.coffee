@@ -1,137 +1,46 @@
-link = "http://www.youtube.com/watch?v=FU4cnelEdi4"
-id = "FU4cnelEdi4"
-
-sclink = "https://soundcloud.com/noisia/mark-knight-ft-skin-nothing"
 
 
+class @Player extends @PlayerAbstract
 
-@Player.ready = () ->
-
-	player = new Player()
-	player.element 'player'
-
-	queue = new Queue()
-	queue.player = player
-
-	url = 'https://soundcloud.com/noisia/mark-knight-ft-skin-nothing'
-	url = 'http://www.youtube.com/watch?v=FU4cnelEdi4'
-
-	queue.add { 
-		link: 'https://soundcloud.com/noisia/mark-knight-ft-skin-nothing'
+	@Events: {
+		READY: 'ready'
 	}
 
-	queue.add { 
-		link: 'http://www.youtube.com/watch?v=FU4cnelEdi4'
-	}
+	element: (@id) ->
 
-	# hack
-	queue.load()
+	load: (url, callback) ->
+		url = new UrlParser(url)
 
+		if @_player
+			@_player.destroy()
 
-	$('#prev').click () ->
-		console.log "click prev"
-		queue.prev()
-	$('#play').click () ->
-		console.log "click play"
-		queue.play()
-	$('#pause').click () ->
-		console.log "click pause"
-		queue.pause()
-	$('#stop').click () ->
-		console.log "click stop"
-		queue.pause()
-	$('#next').click () ->
-		console.log "click next"
-		queue.next()
+		if url.type == 'soundcloud'
+			@_player = new PlayerSoundcloud()
+			console.log @id
+			@_player.element(@id)
+			@_player.load(url.id, callback)
 
-	# youtube = new Player.Youtube()
-	# youtube.element 'ytplayer'
-	# youtube.load 'FU4cnelEdi4'
+		if url.type == 'youtube'
+			@_player = new PlayerYoutube()
+			@_player.element(@id)
+			@_player.load(url.id, callback)
 
-	# $('#ytplay').click () ->
-	# 	console.log "click play!"
-	# 	youtube.play()
-	# $('#ytpause').click () ->
-	# 	youtube.pause()
-	# 	console.log "click pause"
-	# $('#ytstop').click () ->
-	# 	youtube.stop()
-	# 	console.log "click stop"
+	finish: (callback) ->
+		if @_player
+			@_player.finish(callback)
 
-	# soundcloud = new Player.Soundcloud()
-	# soundcloud.element 'scplayer'
-	# soundcloud.load 'https://soundcloud.com/noisia/mark-knight-ft-skin-nothing'
+	play: () ->
+		if @_player
+			@_player.play()
 
-	# $('#scplay').click () ->
-	# 	console.log "click play!"
-	# 	soundcloud.play()
-	# $('#scpause').click () ->
-	# 	soundcloud.pause()
-	# 	console.log "click pause"
-	# $('#scstop').click () ->
-	# 	soundcloud.stop()
-	# 	console.log "click stop"
+	pause: () ->
+		if @_player
+			@_player.pause()
 
-# 	"player api ready"
-# @onYouTubeIframeAPIReady = () ->
-# 	console.log "WAT!"
-# 	player = new YT.Player 'ytplayer', {
-# 		height: '390',
-# 		width: '640',
-# 		videoId: 'FU4cnelEdi4',
-# 		events: {
-# 			onPlayerReady: () ->
-# 				console.log "onPlayerReady"
-# 				console.log arguments
-# 			onReady: () ->
-# 				console.log "onReady"
-# 				console.log arguments
-# 				# this is the shit
+	stop: () ->
+		if @_player
+			@_player.stop()
 
-# 			onPlayerStateChange: () ->
-# 				console.log "onPlayerStateChange"
-# 				console.log arguments
-# 			onStateChange: () ->
-# 				console.log "onStateChange"
-# 				console.log arguments
-# 		}
-# 	}
-
-# 	$('#ytplay').click () ->
-# 		console.log "click play"
-# 		player.playVideo()
-# 	$('#ytpause').click () ->
-# 		player.pauseVideo()
-# 		console.log "click pause"
-# 	$('#ytstop').click () ->
-# 		player.stopVideo()
-# 		console.log "click stop"
-
-# 	console.log player
-
-# widget = SC.Widget('scplayer')
-# widget.load "https://soundcloud.com/noisia/mark-knight-ft-skin-nothing", {
-# 	show_comments: false,
-# 	liking: false,
-# 	sharing: false,
-# 	buying: false,
-# 	download: false
-# }
-
-# widget.bind SC.Widget.Events.READY, () ->
-# 	console.log "SC.Widget.Events.READY"
-# 	console.log arguments
-
-# $('#scplay').click () ->
-# 		widget.play()
-# 		console.log "click play"
-# 	$('#scpause').click () ->
-# 		widget.pause()
-# 		console.log "click pause"
-# 	$('#scstop').click () ->
-# 		widget.pause()
-# 		console.log "click stop"
-
-# load
-# play, pause stop
-# events: ready!
+	destroy: () ->
+		if @_player
+			@_player.destroy()

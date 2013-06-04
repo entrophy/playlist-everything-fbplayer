@@ -60,8 +60,12 @@ class @FBService
 
 				callback(err, posts)
 			else
-				@_nextUrl = response.paging.next
-				posts = @_posts = @_posts.concat(response.data)
+				console.log response.paging
+				if (response.paging)
+					@_nextUrl = response.paging.next
+
+				# posts = @_posts = @_posts.concat(response.data)
+				posts = response.data
 
 				callback(err, posts)
 
