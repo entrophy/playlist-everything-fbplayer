@@ -10,7 +10,6 @@ html
 	body
 		#preloader
 		#wrapper(style="display: none;")
-
 		
 			#fb-root
 
@@ -40,8 +39,10 @@ html
 
 							.box.facebook-login(data-ng-show="visible.private", style="display: none;")
 								h4 This page or group requires facebook login
+
+								a.btn.btn-primary.btn-large(href="", data-ng-click="login()") Login with Facebook
 							
-								fb:login-button#fb-button
+								// fb:login-button#fb-button(size="large") Login with facebook
 
 							.preloader(data-ng-show="visible.loading", style="display: none;")
 
@@ -85,6 +86,7 @@ html
 					jquery: "/script/lib/jquery",
 					underscore: "/script/lib/underscore",
 					angular: "/script/lib/angular",
+					mousetrap: "/script/lib/mousetrap",
 
 					// soundcloud: "//www.soundcloud.com/player/api",
 					// youtube: "//www.youtube.com/player_api?noext",

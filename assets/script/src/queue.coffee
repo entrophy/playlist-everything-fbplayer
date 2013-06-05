@@ -39,6 +39,13 @@ class @Queue
 			@player.pause()
 			@playing = false
 
+	playOrPause: () ->
+		if @player
+			if @isPlaying()
+				@pause()
+			else
+				@play()
+
 	stop: () ->
 		console.log "stop"
 		if @player
@@ -99,7 +106,7 @@ class @Queue
 	removeAll: () ->
 		if @player
 			@stop()
-			
+
 		@songs.length = 0
 
 

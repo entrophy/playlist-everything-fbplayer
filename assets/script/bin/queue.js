@@ -53,6 +53,16 @@
       }
     };
 
+    Queue.prototype.playOrPause = function() {
+      if (this.player) {
+        if (this.isPlaying()) {
+          return this.pause();
+        } else {
+          return this.play();
+        }
+      }
+    };
+
     Queue.prototype.stop = function() {
       console.log("stop");
       if (this.player) {

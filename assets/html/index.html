@@ -32,8 +32,8 @@
                 <h4>The url provided seems invalid</h4>
               </div>
               <div data-ng-show="visible.private" style="display: none;" class="box facebook-login">
-                <h4>This page or group requires facebook login</h4>
-                <fb:login-button id="fb-button"></fb:login-button>
+                <h4>This page or group requires facebook login</h4><a href="" data-ng-click="login()" class="btn btn-primary btn-large">Login with Facebook</a>
+                <!-- fb:login-button#fb-button(size="large") Login with facebook-->
               </div>
               <div data-ng-show="visible.loading" style="display: none;" class="preloader"></div>
             </div>
@@ -72,6 +72,7 @@
         jquery: "/script/lib/jquery",
         underscore: "/script/lib/underscore",
         angular: "/script/lib/angular",
+        mousetrap: "/script/lib/mousetrap",
         
         // soundcloud: "//www.soundcloud.com/player/api",
         // youtube: "//www.youtube.com/player_api?noext",

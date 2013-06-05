@@ -11,7 +11,7 @@
     }
   };
 
-  define(['jquery', 'underscore', 'angular', 'youtube', 'facebook', 'soundcloud'], function() {
+  define(['jquery', 'underscore', 'angular', 'youtube', 'facebook', 'soundcloud', 'mousetrap'], function() {
     return $(document).ready(function() {
       return done();
     });
@@ -57,6 +57,16 @@
         $scope.visible.search = true;
         return $scope.visible.loading = false;
       })();
+      $scope.login = function() {
+        FB.login(function(response) {
+          console.log("here new:");
+          console.log(response);
+          if (response.status === "connected") {
+            return $scope.loadPage();
+          }
+        });
+        return false;
+      };
       $scope.loadPage = function() {
         $scope.resetVisibility();
         $scope.visible.loading = true;
@@ -151,9 +161,21 @@
       $scope.next = function() {
         return Queue.next();
       };
-      return $scope.prev = function() {
+      $scope.prev = function() {
         return Queue.prev();
       };
+      Mousetrap.bind('space', function() {
+        Queue.playOrPause();
+        return false;
+      });
+      Mousetrap.bind('right', function() {
+        Queue.next();
+        return false;
+      });
+      return Mousetrap.bind('left', function() {
+        Queue.prev();
+        return false;
+      });
     });
     return angular.bootstrap(document, ['PlaylistEverythingFacebookPlayer']);
   };
