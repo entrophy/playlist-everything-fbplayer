@@ -11,7 +11,7 @@
     }
   };
 
-  define(['jquery', 'underscore', 'angular', 'youtube', 'facebook', 'soundcloud', 'mousetrap'], function() {
+  define(['jquery', 'underscore', 'angular', 'youtube', 'facebook', 'soundcloud', 'mousetrap', 'jquery.xdomainajax'], function() {
     return $(document).ready(function() {
       return done();
     });
@@ -43,7 +43,7 @@
     });
     app.service('FBService', _this.FBService);
     app.service('Queue', _this.Queue);
-    app.controller('PageCtrl', function($scope, $rootScope, $location, FBService, Queue) {
+    app.controller('PageCtrl', function($scope, $http, $rootScope, $location, FBService, Queue) {
       var _this = this;
 
       console.log(" --> PageCtrl");

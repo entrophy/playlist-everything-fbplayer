@@ -19,6 +19,26 @@ class @FBService
 		else
 			@_url + '/posts'
 
+	# getGroup: (callback) ->
+	# 	err = null
+	# 	page = null
+
+	# 	console.log "get group"
+
+	# 	if @getPageUrl()
+	# 		url = 'https://www.facebook.com/groups/' + @getPageUrl() + '/'
+
+	# 		FB.api '/me/groups', (response) ->
+	# 			console.log response
+
+	# 			if response.error
+	# 				switch response.error.code
+	# 					else err = "private"
+
+	# 				callback(err, page)
+	# 			else
+	# 				console.log "GOT GROUPS LOL"
+
 	getPage: (callback) ->
 		err = null
 		page = null
@@ -29,7 +49,7 @@ class @FBService
 				if response.error
 					switch response.error.code
 						when 803 then err = "invalid"
-						when 104 then err = "private"
+						else err = "private"
 
 					console.log "HER FØRST"
 					callback(err, page)

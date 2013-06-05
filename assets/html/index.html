@@ -29,7 +29,7 @@
                 <p data-ng-bind="page.about"></p><a href="" data-ng-click="unloadPage()" class="close">&times;</a>
               </div>
               <div data-ng-show="visible.invalid" style="display: none;" class="box facebook-invalid">
-                <h4>The url provided seems invalid</h4>
+                <h4>No page or group found</h4>
               </div>
               <div data-ng-show="visible.private" style="display: none;" class="box facebook-login">
                 <h4>This page or group requires facebook login</h4><a href="" data-ng-click="login()" class="btn btn-primary btn-large">Login with Facebook</a>
@@ -70,6 +70,7 @@
       var require = {
        paths: {
         jquery: "/script/lib/jquery",
+        "jquery.xdomainajax": "/script/lib/jquery.xdomainajax",
         underscore: "/script/lib/underscore",
         angular: "/script/lib/angular",
         mousetrap: "/script/lib/mousetrap",
@@ -81,6 +82,11 @@
         youtube: "/script/lib/youtube",
         facebook: "/script/lib/facebook",
         soundcloud: "/script/lib/soundcloud"
+       },
+       shim: {
+        "jquery.xdomainajax": {
+         deps: ["jquery"]
+        }
        },
        urlArgs: Math.random()
       };

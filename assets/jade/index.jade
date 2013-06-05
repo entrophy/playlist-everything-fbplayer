@@ -35,7 +35,7 @@ html
 								a.close(href="", data-ng-click="unloadPage()") &times;
 
 							.box.facebook-invalid(data-ng-show="visible.invalid", style="display: none;")
-								h4 The url provided seems invalid
+								h4 No page or group found
 
 							.box.facebook-login(data-ng-show="visible.private", style="display: none;")
 								h4 This page or group requires facebook login
@@ -84,6 +84,7 @@ html
 			var require = {
 				paths: {
 					jquery: "/script/lib/jquery",
+					"jquery.xdomainajax": "/script/lib/jquery.xdomainajax",
 					underscore: "/script/lib/underscore",
 					angular: "/script/lib/angular",
 					mousetrap: "/script/lib/mousetrap",
@@ -95,6 +96,11 @@ html
 					youtube: "/script/lib/youtube",
 					facebook: "/script/lib/facebook",
 					soundcloud: "/script/lib/soundcloud"
+				},
+				shim: {
+					"jquery.xdomainajax": {
+						deps: ["jquery"]
+					}
 				},
 				urlArgs: Math.random()
 			};

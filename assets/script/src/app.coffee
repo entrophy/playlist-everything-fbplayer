@@ -11,7 +11,8 @@ define [
 	'facebook',
 	'soundcloud',
 
-	'mousetrap'
+	'mousetrap',
+	'jquery.xdomainajax'
 
 	# 'service.fb',
 	# 'service.song',
@@ -69,7 +70,7 @@ ready = () =>
 	app.service 'FBService', @FBService
 	app.service 'Queue', @Queue
 
-	app.controller 'PageCtrl', ($scope, $rootScope, $location, FBService, Queue) ->
+	app.controller 'PageCtrl', ($scope, $http, $rootScope, $location, FBService, Queue) ->
 		console.log " --> PageCtrl"
 
 		$scope.page = null

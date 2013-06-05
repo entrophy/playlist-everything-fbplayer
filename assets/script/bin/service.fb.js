@@ -41,7 +41,7 @@
               case 803:
                 err = "invalid";
                 break;
-              case 104:
+              default:
                 err = "private";
             }
             console.log("HER FØRST");
