@@ -98,6 +98,7 @@ ready = () =>
 		$scope.loadPage = () =>
 			$scope.resetVisibility()
 			$scope.visible.loading = true
+			$scope.$apply()
 
 			FBService.setPageUrl($scope.url)
 

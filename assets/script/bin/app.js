@@ -70,6 +70,7 @@
       $scope.loadPage = function() {
         $scope.resetVisibility();
         $scope.visible.loading = true;
+        $scope.$apply();
         FBService.setPageUrl($scope.url);
         FBService.getPage(function(err, page) {
           if (err === "invalid") {
