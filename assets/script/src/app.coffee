@@ -64,11 +64,88 @@ ready = () =>
 		xfbml: true
 	});
 
+	# FB.Event.subscribe 'auth.authResponseChange', (response) ->
+	# 	console.log response
+
+
 	app = angular.module('PlaylistEverythingFacebookPlayer', []).config ($locationProvider) ->
 		$locationProvider.html5Mode(true)
 
 	app.service 'FBService', @FBService
 	app.service 'Queue', @Queue
+
+	app.controller 'LoginCtrl', ($scope) ->
+		$scope.visible = false
+
+
+		FB.getLoginStatus (response) ->
+			if response.status != "connected"
+				$scope.$apply () ->
+					$scope.visible = true
+			
+		FB.Event.subscribe 'auth.authResponseChange', (response) ->
+			if response.status != "connected"
+				$scope.$apply () ->
+					$scope.visible = true
+				
+		$scope.login = () ->
+			FB.login (response) ->
+				if response.status == "connected"
+					$scope.visible = false
+					
+			return false
+
+	app.controller 'AppCtrl', ($scope) ->
+		$scope.visible = false
+
+		FB.Event.subscribe 'auth.authResponseChange', (response) ->
+			if response.status == "connected"
+				$scope.$apply () ->
+					$scope.visible = true
+
+	app.controller 'UserCtrl', ($scope) ->
+		$scope.user = {}
+
+		FB.Event.subscribe 'auth.authResponseChange', (response) ->
+			if response.status == "connected"
+				FB.api '/me', (response) ->
+					$scope.$apply () ->
+						$scope.user = response
+					
+
+	app.controller 'PageCtrl', ($scope) ->
+		$scope.page = []
+
+	app.controller 'GroupCtrl', ($scope, $rootScope) ->
+		$scope.group = null
+		$scope.groups = []
+		$scope.test = 'no'
+
+		FB.Event.subscribe 'auth.authResponseChange', (response) ->
+			if response.status == "connected"
+				FB.api '/me/groups', (response) ->
+					$scope.$apply () ->
+						$scope.groups = response.data
+
+		$scope.select = (group) ->
+			$rootScope.$broadcast 'selectGroup', group
+
+	app.controller 'InfoCtrl', ($scope) ->
+		$scope.title = ''
+		$scope.description = ''
+
+		$scope.$on 'selectGroup', (event, group) ->
+			$scope.title = group.name
+			$scope.description = ''
+
+			console.log "her"
+
+	app.controller 'QueueCtrl', ($scope) ->
+		#
+
+	app.controller 'PlayerCtrl', ($scope) ->
+		#
+
 
 	app.controller 'PageCtrl', ($scope, $http, $rootScope, $location, FBService, Queue) ->
 		console.log " --> PageCtrl"

@@ -43,6 +43,84 @@
     });
     app.service('FBService', _this.FBService);
     app.service('Queue', _this.Queue);
+    app.controller('LoginCtrl', function($scope) {
+      $scope.visible = false;
+      FB.getLoginStatus(function(response) {
+        if (response.status !== "connected") {
+          return $scope.$apply(function() {
+            return $scope.visible = true;
+          });
+        }
+      });
+      FB.Event.subscribe('auth.authResponseChange', function(response) {
+        if (response.status !== "connected") {
+          return $scope.$apply(function() {
+            return $scope.visible = true;
+          });
+        }
+      });
+      return $scope.login = function() {
+        FB.login(function(response) {
+          if (response.status === "connected") {
+            return $scope.visible = false;
+          }
+        });
+        return false;
+      };
+    });
+    app.controller('AppCtrl', function($scope) {
+      $scope.visible = false;
+      return FB.Event.subscribe('auth.authResponseChange', function(response) {
+        if (response.status === "connected") {
+          return $scope.$apply(function() {
+            return $scope.visible = true;
+          });
+        }
+      });
+    });
+    app.controller('UserCtrl', function($scope) {
+      $scope.user = {};
+      return FB.Event.subscribe('auth.authResponseChange', function(response) {
+        if (response.status === "connected") {
+          return FB.api('/me', function(response) {
+            return $scope.$apply(function() {
+              return $scope.user = response;
+            });
+          });
+        }
+      });
+    });
+    app.controller('PageCtrl', function($scope) {
+      return $scope.page = [];
+    });
+    app.controller('GroupCtrl', function($scope, $rootScope) {
+      $scope.group = null;
+      $scope.groups = [];
+      $scope.test = 'no';
+      FB.Event.subscribe('auth.authResponseChange', function(response) {
+        if (response.status === "connected") {
+          return FB.api('/me/groups', function(response) {
+            return $scope.$apply(function() {
+              return $scope.groups = response.data;
+            });
+          });
+        }
+      });
+      return $scope.select = function(group) {
+        return $rootScope.$broadcast('selectGroup', group);
+      };
+    });
+    app.controller('InfoCtrl', function($scope) {
+      $scope.title = '';
+      $scope.description = '';
+      return $scope.$on('selectGroup', function(event, group) {
+        $scope.title = group.name;
+        $scope.description = '';
+        return console.log("her");
+      });
+    });
+    app.controller('QueueCtrl', function($scope) {});
+    app.controller('PlayerCtrl', function($scope) {});
     app.controller('PageCtrl', function($scope, $http, $rootScope, $location, FBService, Queue) {
       var _this = this;
 
