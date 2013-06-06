@@ -33,7 +33,7 @@ html
 								div(data-ng-controller="InfoCtrl")
 									.box.box-info(data-ng-show="visible", style="display: none;")
 										h4(data-ng-bind="title")
-										p(data-ng-bind="description")
+										p(data-ng-bind="description", data-ng-show="description")
 
 										a.close(href="", data-ng-click="deselect()") &times;
 
