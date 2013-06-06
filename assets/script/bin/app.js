@@ -234,10 +234,8 @@
           return $scope.songs = Queue.getAllSongs();
         });
       });
-      Queue.on('change', function(song, index) {
-        return $scope.$apply(function() {
-          return $scope.current = index;
-        });
+      Queue.on('change', function(index) {
+        return $scope.current = index;
       });
       Queue.on('last', function() {
         return $scope.$apply(function() {

@@ -81,7 +81,6 @@ class @FBService
 
 		do (r = @request) =>
 			FB.api @getNextItemUrl(), (response) =>
-				console.log response
 				if r == @request
 					if response.error
 						switch response.error.code
@@ -94,8 +93,6 @@ class @FBService
 							@nextUrl = response.paging.next
 
 						items = response.data
-
-						console.log items
 
 						callback(err, items)
 

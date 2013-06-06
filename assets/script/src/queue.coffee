@@ -32,6 +32,7 @@ class @Queue
 	playByIndex: (index) ->
 		@stop()
 		@index = index
+		@emit 'change', [@index]
 		@playing = true
 		@loadAndPlay()
 
@@ -57,12 +58,14 @@ class @Queue
 	prev: () ->
 		if @index - 1 >= 0
 			@index--
+			@emit 'change', [@index]
 
 			@loadAndPlay()
 
 	next: () ->
 		if @index + 1 < @songs.length
 			@index++
+			@emit 'change', [@index]
 
 			@loadAndPlay()
 
@@ -72,8 +75,6 @@ class @Queue
 				player = @player.load song.link, () =>
 					@player.finish () =>
 						@next()
-
-					@emit 'change', [song, @index]
 
 					if @index == @songs.length - 1
 						@emit 'last'
@@ -92,8 +93,6 @@ class @Queue
 
 					if @isPlaying()
 						@play()
-
-					@emit 'change', [song, @index]
 
 					if @index == @songs.length - 1
 						@emit 'last'

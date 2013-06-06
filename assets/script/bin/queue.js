@@ -37,6 +37,7 @@
     Queue.prototype.playByIndex = function(index) {
       this.stop();
       this.index = index;
+      this.emit('change', [this.index]);
       this.playing = true;
       return this.loadAndPlay();
     };
@@ -68,6 +69,7 @@
     Queue.prototype.prev = function() {
       if (this.index - 1 >= 0) {
         this.index--;
+        this.emit('change', [this.index]);
         return this.loadAndPlay();
       }
     };
@@ -75,6 +77,7 @@
     Queue.prototype.next = function() {
       if (this.index + 1 < this.songs.length) {
         this.index++;
+        this.emit('change', [this.index]);
         return this.loadAndPlay();
       }
     };
@@ -89,7 +92,6 @@
             _this.player.finish(function() {
               return _this.next();
             });
-            _this.emit('change', [song, _this.index]);
             if (_this.index === _this.songs.length - 1) {
               _this.emit('last');
             }
@@ -114,7 +116,6 @@
             if (_this.isPlaying()) {
               _this.play();
             }
-            _this.emit('change', [song, _this.index]);
             if (_this.index === _this.songs.length - 1) {
               return _this.emit('last');
             }

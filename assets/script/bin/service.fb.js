@@ -104,7 +104,6 @@
       items = [];
       return (function(r) {
         return FB.api(_this.getNextItemUrl(), function(response) {
-          console.log(response);
           if (r === _this.request) {
             if (response.error) {
               switch (response.error.code) {
@@ -120,7 +119,6 @@
                 _this.nextUrl = response.paging.next;
               }
               items = response.data;
-              console.log(items);
               return callback(err, items);
             }
           }

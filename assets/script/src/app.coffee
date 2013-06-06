@@ -222,9 +222,8 @@ ready = () =>
 			$scope.$apply () ->
 				$scope.songs = Queue.getAllSongs()
 
-		Queue.on 'change', (song, index) ->
-			$scope.$apply () ->
-				$scope.current = index
+		Queue.on 'change', (index) ->
+			$scope.current = index
 
 		Queue.on 'last', () ->
 			$scope.$apply () ->
