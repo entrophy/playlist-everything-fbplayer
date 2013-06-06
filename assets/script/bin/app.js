@@ -174,16 +174,7 @@
         return $scope.visible.more = false;
       })();
       $scope.songs = [];
-      Queue.on('add', function(song) {
-        return $scope.$apply(function() {
-          return $scope.songs = Queue.getAllSongs();
-        });
-      });
-      $scope.$on('selectPage', function(event, page) {
-        $scope.visible.all = true;
-        return $scope.loadPosts();
-      });
-      return $scope.loadPosts = function() {
+      $scope.loadPosts = function() {
         var len;
 
         if (!$scope.visible.loading) {
@@ -200,11 +191,26 @@
                 Queue.add(song);
               }
             }
-            $scope.visible.loading = false;
-            return $scope.visible.more = len < $scope.songs.length;
+            return $scope.$apply(function() {
+              $scope.visible.loading = false;
+              return $scope.visible.more = len < $scope.songs.length;
+            });
           });
         }
       };
+      Queue.on('add', function(song) {
+        return $scope.$apply(function() {
+          return $scope.songs = Queue.getAllSongs();
+        });
+      });
+      $scope.$on('selectPage', function(event, page) {
+        $scope.visible.all = true;
+        return $scope.loadPosts();
+      });
+      return $scope.$on('deselect', function(event) {
+        $scope.resetVisibility();
+        return Queue.clear();
+      });
     });
     app.controller('ControlsCtrl', function($scope, Queue) {
       $scope.play = function() {

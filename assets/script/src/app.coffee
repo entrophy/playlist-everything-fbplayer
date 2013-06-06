@@ -176,14 +176,6 @@ ready = () =>
 
 		$scope.songs = []
 
-		Queue.on 'add', (song) ->
-			$scope.$apply () ->
-				$scope.songs = Queue.getAllSongs()
-			
-		$scope.$on 'selectPage', (event, page) ->
-			$scope.visible.all = true
-			$scope.loadPosts()
-
 		$scope.loadPosts = () ->
 			if !$scope.visible.loading # if not already loading
 				$scope.visible.more = false
@@ -198,8 +190,21 @@ ready = () =>
 						if song.playable
 							Queue.add(song)
 
-					$scope.visible.loading = false
-					$scope.visible.more = len < $scope.songs.length
+					$scope.$apply () ->
+						$scope.visible.loading = false
+						$scope.visible.more = len < $scope.songs.length
+
+		Queue.on 'add', (song) ->
+			$scope.$apply () ->
+				$scope.songs = Queue.getAllSongs()
+			
+		$scope.$on 'selectPage', (event, page) ->
+			$scope.visible.all = true
+			$scope.loadPosts()
+
+		$scope.$on 'deselect', (event) ->
+			$scope.resetVisibility()
+			Queue.clear()
 
 
 	app.controller 'ControlsCtrl', ($scope, Queue) ->
@@ -231,6 +236,7 @@ ready = () =>
 			return false
 
 	app.controller 'PlayerCtrl', ($scope) ->
+
 		#
 
 

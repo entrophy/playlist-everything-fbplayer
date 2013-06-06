@@ -124,16 +124,6 @@ ul.song-list li:after {
 ul.song-list li:after {
   clear: both;
 }
-ul.song-list li span.title,
-ul.song-list li span.origin {
-  padding: 6px 8px;
-}
-ul.song-list li span.title {
-  float: left;
-}
-ul.song-list li span.origin {
-  float: right;
-}
 .page-find h4 {
   margin: 0px 0px 8px 0px;
 }
