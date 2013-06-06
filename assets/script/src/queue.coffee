@@ -108,6 +108,3 @@ class @Queue
 			@stop()
 
 		@songs.length = 0
-
-
-
