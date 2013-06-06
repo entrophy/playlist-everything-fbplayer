@@ -1,6 +1,8 @@
 
 type_map = {
 	'www.youtube.com': 'Youtube'
+	'youtu.be': 'Youtube',
+	'youtube.com': 'Youtube',
 	'soundcloud.com': 'Soundcloud'
 }
 

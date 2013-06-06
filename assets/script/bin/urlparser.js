@@ -5,7 +5,7 @@
       var matches, regex;
       this.url = url;
       this.type = this.url.indexOf('soundcloud') !== -1 ? 'soundcloud' : this.type;
-      this.type = this.url.indexOf('youtube') !== -1 ? 'youtube' : this.type;
+      this.type = this.url.indexOf('youtu') !== -1 ? 'youtube' : this.type;
       if (this.type === 'soundcloud') {
         this.id = this.url;
       }
