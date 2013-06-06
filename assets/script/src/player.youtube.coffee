@@ -20,16 +20,19 @@ class @PlayerYoutube extends @PlayerAbstract
 					callback()
 
 				onStateChange: (event) =>
-					if event.data == 0
-						if @finishcallback
-							@finishcallback()
-				
+					@finishCallback() if event.data == 0 && @finishCallback 
+
+				onError: (event) =>
+					@errorCallback {code: event.data} if @errorCallback
 			}
 		}
 
 	finish: (callback) ->
 		console.log "youtube bind finish"
-		@finishcallback = callback
+		@finishCallback = callback
+
+	error: (callback) ->
+		@errorCallback = callback
 
 	play: () ->
 		if @_player

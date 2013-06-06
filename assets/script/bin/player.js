@@ -33,13 +33,20 @@
       if (url.type === 'youtube') {
         this._player = new PlayerYoutube();
         this._player.element(this.id);
-        return this._player.load(url.id, callback);
+        this._player.load(url.id, callback);
       }
+      return this._player;
     };
 
     Player.prototype.finish = function(callback) {
       if (this._player) {
         return this._player.finish(callback);
+      }
+    };
+
+    Player.prototype.error = function(callback) {
+      if (this._player) {
+        return this._player.error(callback);
       }
     };
 
