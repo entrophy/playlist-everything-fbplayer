@@ -13,7 +13,9 @@
     };
 
     FBService.prototype.setUrl = function(url) {
-      return this.url = $.trim(url);
+      this.url = $.trim(url);
+      this.url = this.url.split('?');
+      return this.url = this.url.shift();
     };
 
     FBService.prototype.getUrl = function() {

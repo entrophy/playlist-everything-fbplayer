@@ -10,6 +10,8 @@ class @FBService
 
 	setUrl: (url) ->
 		@url = $.trim(url)
+		@url = @url.split('?')
+		@url = @url.shift()
 
 	getUrl: () ->
 		@url
