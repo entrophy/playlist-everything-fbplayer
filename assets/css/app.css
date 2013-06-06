@@ -113,7 +113,14 @@ ul.box-list li {
   margin: 0px 0px 2px 0px;
   padding: 8px;
 }
+ul.song-list {
+  margin: 0px;
+  padding: 0px;
+  list-style-type: none;
+}
 ul.song-list li {
+  position: relative;
+  margin: 0px 0px 2px 0px;
   zoom: 1;
 }
 ul.song-list li:before,
@@ -123,6 +130,34 @@ ul.song-list li:after {
 }
 ul.song-list li:after {
   clear: both;
+}
+ul.song-list li .play,
+ul.song-list li .title,
+ul.song-list li .origin {
+  background: rgba(255,255,255,0.6);
+  padding: 8px 0px;
+}
+ul.song-list li .title {
+  display: block;
+  margin-left: 42px;
+  margin-right: 122px;
+  padding: 8px 12px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+ul.song-list li .play {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  text-align: center;
+}
+ul.song-list li .origin {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 120px;
+  text-align: center;
 }
 .page-find h4 {
   margin: 0px 0px 8px 0px;

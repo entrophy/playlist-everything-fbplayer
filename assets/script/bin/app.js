@@ -88,21 +88,23 @@
         return $scope.visible.loading = false;
       })();
       $scope.selectPage = function() {
-        $scope.resetVisibility();
-        $scope.visible.loading = true;
-        FBService.setType('page');
-        FBService.setUrl($scope.url);
-        FBService.getPage(function(err, page) {
-          return $scope.$apply(function() {
-            $scope.visible.loading = false;
-            if (err === "invalid") {
-              return $scope.visible.invalid = true;
-            } else {
-              $scope.visible.all = false;
-              return $rootScope.$broadcast("selectPage", page);
-            }
+        if ($scope.url) {
+          $scope.resetVisibility();
+          $scope.visible.loading = true;
+          FBService.setType('page');
+          FBService.setUrl($scope.url);
+          FBService.getPage(function(err, page) {
+            return $scope.$apply(function() {
+              $scope.visible.loading = false;
+              if (err === "invalid") {
+                return $scope.visible.invalid = true;
+              } else {
+                $scope.visible.all = false;
+                return $rootScope.$broadcast("selectPage", page);
+              }
+            });
           });
-        });
+        }
         return false;
       };
       $scope.$on('select', function() {
@@ -200,6 +202,12 @@
           });
         }
       };
+      $scope.play = function(index) {
+        return Queue.playByIndex(index);
+      };
+      $scope.pause = function() {
+        return Queue.pause();
+      };
       Queue.on('add', function(song) {
         return $scope.$apply(function() {
           return $scope.songs = Queue.getAllSongs();
@@ -220,6 +228,7 @@
       });
     });
     app.controller('ControlsCtrl', function($scope, Queue) {
+      $scope.visible = false;
       $scope.play = function() {
         return Queue.play();
       };
@@ -243,12 +252,17 @@
         Queue.next();
         return false;
       });
-      return Mousetrap.bind('left', function() {
+      Mousetrap.bind('left', function() {
         Queue.prev();
         return false;
       });
+      $scope.$on('select', function(event) {
+        return $scope.visible = true;
+      });
+      return $scope.$on('deselect', function(event) {
+        return $scope.visible = false;
+      });
     });
-    app.controller('PlayerCtrl', function($scope) {});
     return angular.bootstrap(document, ['PlaylistEverythingFacebookPlayer']);
   };
 

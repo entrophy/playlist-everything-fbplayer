@@ -16,7 +16,6 @@
     Queue.prototype.add = function(song) {
       var callback, _i, _len, _ref, _results;
 
-      console.log("add");
       this.songs.push(song);
       if (this.songs.length === 1) {
         this.playing = true;
@@ -31,25 +30,30 @@
       return _results;
     };
 
-    Queue.prototype.remove = function(index) {
-      console.log("remove");
+    Queue.prototype.removeByIndex = function(index) {
       console.log(index);
       return this.songs.splice(index, 1);
     };
 
-    Queue.prototype.play = function(index) {
-      console.log("play");
+    Queue.prototype.play = function() {
+      this.playing = true;
       if (this.player) {
-        this.player.play();
-        return this.playing = true;
+        return this.player.play();
       }
     };
 
+    Queue.prototype.playByIndex = function(index) {
+      this.stop();
+      this.index = index;
+      this.playing = true;
+      return this.loadAndPlay();
+    };
+
     Queue.prototype.pause = function() {
-      console.log("pause");
+      console.log("PAUSING");
+      this.playing = false;
       if (this.player) {
-        this.player.pause();
-        return this.playing = false;
+        return this.player.pause();
       }
     };
 
@@ -64,15 +68,13 @@
     };
 
     Queue.prototype.stop = function() {
-      console.log("stop");
+      this.playing = false;
       if (this.player) {
-        this.player.stop();
-        return this.playing = false;
+        return this.player.stop();
       }
     };
 
     Queue.prototype.prev = function() {
-      console.log("prev");
       if (this.index - 1 >= 0) {
         this.index--;
         return this.loadAndPlay();
@@ -80,7 +82,6 @@
     };
 
     Queue.prototype.next = function() {
-      console.log("next");
       if (this.index + 1 < this.songs.length) {
         this.index++;
         return this.loadAndPlay();

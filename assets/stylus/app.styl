@@ -110,8 +110,40 @@ ul.box-list
 		padding: 8px
 
 ul.song-list
+	margin: 0px
+	padding: 0px
+	list-style-type: none
+
 	li
+		position: relative
+		margin: 0px 0px 2px 0px
 		clearfix()
+
+		.play, .title, .origin
+			background: rgba(255, 255, 255, 0.6)
+			padding: 8px 0px
+
+		.title
+			display: block
+			margin-left: 42px
+			margin-right: 122px
+			padding: 8px 12px
+			overflow: hidden
+			white-space: nowrap
+
+		.play
+			position: absolute
+			top: 0
+			left: 0
+			width: 40px
+			text-align: center
+
+		.origin
+			position: absolute
+			top: 0
+			right: 0
+			width: 120px
+			text-align: center
 
 .page-find
 	h4
@@ -123,8 +155,6 @@ ul.song-list
 .more a
 	display: block
 	text-align: center
-
-
 
 input[type="text"]
 	border-radius 0px

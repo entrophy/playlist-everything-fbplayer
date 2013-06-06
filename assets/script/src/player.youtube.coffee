@@ -32,13 +32,16 @@ class @PlayerYoutube extends @PlayerAbstract
 		@finishcallback = callback
 
 	play: () ->
-		@_player.playVideo()
+		if @_player
+			@_player.playVideo()
 
 	pause: () ->
-		@_player.pauseVideo()
+		if @_player
+			@_player.pauseVideo()
 
 	stop: () ->
-		@_player.stopVideo()
+		if @_player
+			@_player.stopVideo()
 
 	create: () ->
 		elem = $('<div />')

@@ -24,16 +24,20 @@ class @PlayerSoundcloud extends @PlayerAbstract
 		}
 
 	finish: (callback) ->
-		@_player.bind SC.Widget.Events.FINISH, callback
+		if @_player
+			@_player.bind SC.Widget.Events.FINISH, callback
 			
 	play: () ->
-		@_player.play()
+		if @_player
+			@_player.play()
 
 	pause: () ->
-		@_player.pause()
+		if @_player
+			@_player.pause()
 
 	stop: () ->
-		@_player.pause()
+		if @_player
+			@_player.pause()
 
 	create: () ->
 		console.log "soundcloud create"

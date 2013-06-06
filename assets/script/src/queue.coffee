@@ -11,8 +11,6 @@ class @Queue
 		@player = player
 
 	add: (song) ->
-		console.log "add"
-
 		@songs.push(song)
 
 		if @songs.length == 1
@@ -22,22 +20,28 @@ class @Queue
 		for callback in @callbacks['add'] || []
 			callback.call(@, song)
 
-	remove: (index) ->
-		console.log "remove"
+	removeByIndex: (index) ->
 		console.log index
 		@songs.splice(index, 1)
 
-	play: (index) ->
-		console.log "play"
+	play: () ->
+		@playing = true
+
 		if @player
 			@player.play()
-			@playing = true
+
+	playByIndex: (index) ->
+		@stop()
+		@index = index
+		@playing = true
+		@loadAndPlay()
 
 	pause: () ->
-		console.log "pause"
+		console.log "PAUSING"
+		@playing = false
+
 		if @player
 			@player.pause()
-			@playing = false
 
 	playOrPause: () ->
 		if @player
@@ -47,22 +51,18 @@ class @Queue
 				@play()
 
 	stop: () ->
-		console.log "stop"
+		@playing = false
+
 		if @player
 			@player.stop()
-			@playing = false
 
 	prev: () ->
-		console.log "prev"
-		
 		if @index - 1 >= 0
 			@index--
 
 			@loadAndPlay()
 
 	next: () ->
-		console.log "next"
-		
 		if @index + 1 < @songs.length
 			@index++
 
@@ -107,6 +107,3 @@ class @Queue
 			@stop()
 
 		@songs.length = 0
-
-
-

@@ -32,19 +32,27 @@
     };
 
     PlayerSoundcloud.prototype.finish = function(callback) {
-      return this._player.bind(SC.Widget.Events.FINISH, callback);
+      if (this._player) {
+        return this._player.bind(SC.Widget.Events.FINISH, callback);
+      }
     };
 
     PlayerSoundcloud.prototype.play = function() {
-      return this._player.play();
+      if (this._player) {
+        return this._player.play();
+      }
     };
 
     PlayerSoundcloud.prototype.pause = function() {
-      return this._player.pause();
+      if (this._player) {
+        return this._player.pause();
+      }
     };
 
     PlayerSoundcloud.prototype.stop = function() {
-      return this._player.pause();
+      if (this._player) {
+        return this._player.pause();
+      }
     };
 
     PlayerSoundcloud.prototype.create = function() {
