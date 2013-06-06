@@ -79,6 +79,9 @@ class @Queue
 
 					@emit 'change', [song, @index]
 
+					if @index == @songs.length - 1
+						@emit 'last'
+
 					return
 
 	loadAndPlay: () ->
@@ -93,13 +96,16 @@ class @Queue
 
 					@emit 'change', [song, @index]
 
+					if @index == @songs.length - 1
+						@emit 'last'
+
 	isPlaying: () ->
 		return @playing
 
 	on: (event, callback) ->
 		(@callbacks[event] = @callbacks[event] || []).push(callback)
 
-	emit: (event, args) ->
+	emit: (event, args = []) ->
 		for callback in @callbacks[event] || []
 			callback.apply(@, args)
 

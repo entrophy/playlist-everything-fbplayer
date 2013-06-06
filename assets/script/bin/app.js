@@ -11,7 +11,7 @@
     }
   };
 
-  define(['jquery', 'underscore', 'angular', 'youtube', 'facebook', 'soundcloud', 'mousetrap', 'jquery.xdomainajax'], function() {
+  define(['jquery', 'underscore', 'angular', 'youtube', 'facebook', 'soundcloud', 'mousetrap'], function() {
     return $(document).ready(function() {
       return done();
     });
@@ -217,6 +217,11 @@
       Queue.on('change', function(song, index) {
         return $scope.$apply(function() {
           return $scope.current = index;
+        });
+      });
+      Queue.on('last', function() {
+        return $scope.$apply(function() {
+          return $scope.loadSongs();
         });
       });
       $scope.$on('selectPage', function(event, page) {

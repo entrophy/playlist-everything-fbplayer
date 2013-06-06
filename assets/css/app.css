@@ -134,7 +134,7 @@ ul.song-list li:after {
 ul.song-list li.current .play,
 ul.song-list li.current .title,
 ul.song-list li.current .origin {
-  background: rgba(200,200,200,0.6);
+  background: rgba(175,175,175,0.6);
 }
 ul.song-list li .play,
 ul.song-list li .title,
