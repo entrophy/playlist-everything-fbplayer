@@ -51,12 +51,20 @@
           return $scope.$apply(function() {
             return $scope.visible = true;
           });
+        } else {
+          return $scope.$apply(function() {
+            return $scope.visible = false;
+          });
         }
       });
       FB.Event.subscribe('auth.authResponseChange', function(response) {
         if (response.status !== "connected") {
           return $scope.$apply(function() {
             return $scope.visible = true;
+          });
+        } else {
+          return $scope.$apply(function() {
+            return $scope.visible = false;
           });
         }
       });

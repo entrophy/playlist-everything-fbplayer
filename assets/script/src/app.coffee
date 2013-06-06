@@ -48,11 +48,18 @@ ready = () =>
 			if response.status != "connected"
 				$scope.$apply () ->
 					$scope.visible = true
+			else
+				$scope.$apply () ->
+					$scope.visible = false
+
 			
 		FB.Event.subscribe 'auth.authResponseChange', (response) ->
 			if response.status != "connected"
 				$scope.$apply () ->
 					$scope.visible = true
+			else
+				$scope.$apply () ->
+					$scope.visible = false
 				
 		$scope.login = () ->
 			FB.login (response) ->
