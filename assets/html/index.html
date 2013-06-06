@@ -10,52 +10,77 @@
     <div id="preloader"></div>
     <div id="wrapper" style="display: none;">
       <div id="fb-root"></div>
-      <div id="queue-wrapper">
-        <div class="container-fluid">
-          <div class="row-fluid">
-            <div class="span12">&nbsp;</div>
-          </div>
-          <div data-ng-controller="PageCtrl" class="row-fluid">
-            <div class="span8 offset2">
-              <div data-ng-show="visible.search" class="box search">
-                <h4>Create a playlist</h4>
-                <form data-ng-submit="loadPage()">
-                  <input id="url-search" type="text" placeholder="Paste a Facebook group or page url and press enter..." tabindex="1" autofocus data-ng-model="url" class="span11 pull-left"><a href="" data-ng-click="loadPage()" class="btn btn-success pull-right">Go!</a>
-                  <input type="submit" hidefocus class="fake-submit">
-                </form>
-              </div>
-              <div data-ng-show="visible.page" style="display: none;" class="box page">
-                <h2 data-ng-bind="page.name"></h2>
-                <p data-ng-bind="page.about"></p><a href="" data-ng-click="unloadPage()" class="close">&times;</a>
-              </div>
-              <div data-ng-show="visible.invalid" style="display: none;" class="box facebook-invalid">
-                <h4>No page or group found</h4>
-              </div>
-              <div data-ng-show="visible.private" style="display: none;" class="box facebook-login">
-                <h4>This page or group requires facebook login</h4><a href="" data-ng-click="login()" class="btn btn-primary btn-large">Login with Facebook</a>
-                <!-- fb:login-button#fb-button(size="large") Login with facebook-->
-              </div>
-              <div data-ng-show="visible.loading" style="display: none;" class="preloader"></div>
+      <div data-ng-controller="LoginCtrl">
+        <div id="facebook-login" data-ng-show="visible" style="display: none;">
+          <div class="container-fluid">
+            <div class="row-fluid">
+              <div class="span12">&nbsp;</div>
             </div>
-          </div>
-          <div data-ng-controller="SongCtrl" class="row-fluid">
-            <div class="span8 offset2">
-              <ul class="box-list song-list">
-                <li data-ng-repeat="song in songs"> <span data-ng-bind="song.title" class="title"></span><span data-ng-bind="song.origin" class="origin"></span></li>
-              </ul>
-              <div data-ng-show="visible.more" style="display: none;" class="more box"><a href="" data-ng-click="loadPosts()">Load more songs</a></div>
-              <div data-ng-show="visible.loading" style="display: none;" class="preloader"></div>
+            <div class="row-fluid">
+              <div class="span4 offset4 box">
+                <h3>Baah! Facebook</h3><a href="" data-ng-click="login()" class="btn btn-primary btn-large">Login with Facebook</a>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div id="player-wrapper">
+      <div data-ng-controller="AppCtrl">
+        <div id="app-wrapper" data-ng-show="visible" style="display: none;">
+          <div class="container-fluid">
+            <div class="row-fluid">
+              <div class="span12">&nbsp;</div>
+            </div>
+            <div class="row-fluid">
+              <div class="span8 offset2">
+                <div data-ng-controller="InfoCtrl">
+                  <div data-ng-show="visible" style="display: none;" class="box">
+                    <h4 data-ng-bind="title"></h4>
+                    <p data-ng-bind="description"></p><a href="" data-ng-click="deselect()" class="close">&times;</a>
+                  </div>
+                </div>
+                <div data-ng-controller="PageCtrl">
+                  <div data-ng-show="visible.all" style="display: none;" class="box page-find">
+                    <h4>Find a page ...</h4>
+                    <form data-ng-submit="selectPage()">
+                      <input id="url-search" type="text" placeholder="Paste a Facebook page url ..." tabindex="1" autofocus data-ng-model="url" class="span11 pull-left"><a href="" data-ng-click="selectPage()" class="btn btn-success pull-right">Go!</a>
+                      <input type="submit" hidefocus class="fake-submit">
+                    </form>
+                  </div>
+                  <div data-ng-show="visible.invalid" style="display: none;" class="box facebook-invalid">
+                    <h4>No page found</h4>
+                  </div>
+                  <div data-ng-show="visible.loading" style="display: none;" class="preloader"></div>
+                </div>
+                <div data-ng-controller="GroupCtrl">
+                  <div data-ng-show="visible.all" style="display: none;">
+                    <div class="box">
+                      <h4>... or choose a group!</h4>
+                    </div>
+                    <ul class="box-list">
+                      <li data-ng-repeat="group in groups"><a href="" data-ng-click="selectGroup(group)" data-ng-bind="group.name"></a></li>
+                    </ul>
+                    <div data-ng-show="visible.loading" style="display: none;" class="preloader"></div>
+                  </div>
+                </div>
+                <div data-ng-controller="QueueCtrl">
+                  <ul class="box-list song-list">
+                    <li data-ng-repeat="song in songs"> <span data-ng-bind="song.title" class="title"></span><span data-ng-bind="song.origin" class="origin"></span></li>
+                  </ul>
+                  <div data-ng-show="visible.more" style="display: none;" class="more box"><a href="" data-ng-click="loadPosts()">Load more songs</a></div>
+                  <div data-ng-show="visible.loading" style="display: none;" class="preloader"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="bottom-wrapper">
         <div class="container-fluid">
           <div class="row-fluid">
             <div data-ng-controller="ControlsCtrl" class="span4 offset2">
               <div id="buttons"><a data-ng-click="prev()" class="btn btn-large"><i class="icon-fast-backward"></i></a><a data-ng-click="play()" class="btn btn-large"><i class="icon-play"></i></a><a data-ng-click="pause()" class="btn btn-large"><i class="icon-pause"></i></a><a data-ng-click="stop()" class="btn btn-large"><i class="icon-stop"></i></a><a data-ng-click="next()" class="btn btn-large"><i class="icon-fast-forward"></i></a></div>
             </div>
-            <div class="span4">
+            <div data-ng-controller="PlayerCtrl" class="span4">
               <div class="player">
                 <div class="prevent"></div>
                 <div id="player"></div>

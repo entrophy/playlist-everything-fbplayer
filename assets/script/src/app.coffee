@@ -13,41 +13,14 @@ define [
 
 	'mousetrap',
 	'jquery.xdomainajax'
-
-	# 'service.fb',
-	# 'service.song',
-
-	# 'model.song',
-	# 'urlparser',
-	# 'player.abstract',
-	# 'player.soundcloud',
-	# 'player.youtube'
-	# 'player',
-	# 'queue'
 ], () ->
-
-	# console.log "jquery"
-	# console.log $
-	# console.log "underscore"
-	# console.log _
-	# console.log "angular"
-	# console.log angular
-
-	# console.log "SoundCloud"
-	# console.log SC
-
 	$(document).ready () ->
-		# console.log "document ready"
 		done()
 
 window.onYouTubeIframeAPIReady = () =>
-	# console.log "YouTube callback"
-	# console.log YT
 	done()
 
 window.fbAsyncInit = () =>
-	# console.log "Facebook callback"
-	# console.log FB
 	done()
 
 ready = () =>
@@ -70,94 +43,146 @@ ready = () =>
 	app.service 'FBService', @FBService
 	app.service 'Queue', @Queue
 
-	app.controller 'PageCtrl', ($scope, $http, $rootScope, $location, FBService, Queue) ->
-		console.log " --> PageCtrl"
+	app.controller 'LoginCtrl', ($scope) ->
+		$scope.visible = false
 
-		$scope.page = null
-		$scope.url = $location.absUrl().split('/').pop()
+		FB.getLoginStatus (response) ->
+			if response.status != "connected"
+				$scope.$apply () ->
+					$scope.visible = true
+			
+		FB.Event.subscribe 'auth.authResponseChange', (response) ->
+			if response.status != "connected"
+				$scope.$apply () ->
+					$scope.visible = true
+				
+		$scope.login = () ->
+			FB.login (response) ->
+				if response.status == "connected"
+					$scope.visible = false
+					
+			return false
+
+
+	app.controller 'AppCtrl', ($scope) ->
+		$scope.visible = false
+
+		FB.Event.subscribe 'auth.authResponseChange', (response) ->
+			if response.status == "connected"
+				$scope.$apply () ->
+					$scope.visible = true
+
+
+	app.controller 'PageCtrl', ($scope, $rootScope, FBService) ->
+		$scope.url = ''
 
 		($scope.resetVisibility = () ->
 			$scope.visible = {}
+			$scope.visible.all = true
 			$scope.visible.invalid = false
-			$scope.visible.private = false
-			$scope.visible.page = false
-			$scope.visible.search = true
 			$scope.visible.loading = false
 		)()
 
-		$scope.login = () ->
-			FB.login (response) ->
-				console.log "here new:"
-				console.log response
-
-				if response.status == "connected"
-					$scope.loadPage()
-
-			return false
-
-		$scope.loadPage = () =>
+		$scope.selectPage = () =>
 			$scope.resetVisibility()
 			$scope.visible.loading = true
-			$scope.$apply()
 
 			FBService.setPageUrl($scope.url)
 
 			FBService.getPage (err, page) =>
-				if err == "invalid"
-					$scope.visible.invalid = true
-				else if err == "private"
-					$scope.visible.private = true
-				else
-					$scope.visible.search = false
-					$scope.visible.page = true
+				$scope.$apply () ->
+					$scope.visible.loading = false
 
-					$scope.page = page
-
-					$location.path(page.link.split('/').pop())
-					$location.replace()
-
-					# YURK!
-					$rootScope.$broadcast("loadPosts")
-
-				$scope.visible.loading = false
-				$scope.$apply()
-
+					if err == "invalid"
+						$scope.visible.invalid = true
+					else
+						$scope.visible.all = false
+						$rootScope.$broadcast("selectPage", page)
+				
 			return false
 
-		$scope.unloadPage = () ->
-			FBService.clear()
+		$scope.$on 'select', () ->
+			$scope.resetVisibility()
+			$scope.visible.all = false
 
-			$scope.page = null
+		$scope.$on 'deselect', () ->
 			$scope.resetVisibility()
 
-			$('#url-search').focus()
 
-			# YURK!
-			$rootScope.$broadcast("uploadPosts")
-
-			return false
-
-	app.controller 'SongCtrl', ($scope, $rootScope,FBService, Queue) ->
-		console.log " --> SongCtrl"
-
-		$scope.songs = []
+	app.controller 'GroupCtrl', ($scope, $rootScope) ->
+		$scope.groups = []
 
 		($scope.resetVisibility = () ->
 			$scope.visible = {}
+			$scope.visible.all = true
+			$scope.visible.loading = false
+		)()
+
+		FB.Event.subscribe 'auth.authResponseChange', (response) ->
+			if response.status == "connected"
+				$scope.$apply () ->
+					$scope.visible.loading = true
+
+				FB.api '/me/groups', (response) ->
+					$scope.$apply () ->
+						$scope.visible.loading = false
+						$scope.groups = response.data
+
+		$scope.selectGroup = (group) ->
+			$scope.visible.all = false
+			$rootScope.$broadcast 'selectGroup', group
+
+		$scope.$on 'select', () ->
+			$scope.resetVisibility()
+			$scope.visible.all = false
+
+		$scope.$on 'deselect', () ->
+			$scope.resetVisibility()
+
+
+	app.controller 'InfoCtrl', ($scope, $rootScope) ->
+		$scope.visible = false
+
+		$scope.title = ''
+		$scope.description = ''
+
+		$scope.$on 'selectGroup', (event, group) ->
+			$scope.title = group.name
+			$scope.description = ''
+			$scope.visible = true
+
+			$rootScope.$broadcast 'select'
+
+		$scope.$on 'selectPage', (event, page) ->
+			$scope.title = page.name
+			$scope.description = page.about
+			$scope.visible = true
+
+			$rootScope.$broadcast 'select'
+
+		$scope.deselect = () ->
+			$scope.visible = false
+
+			$rootScope.$broadcast 'deselect'
+
+
+	app.controller 'QueueCtrl', ($scope, FBService, Queue) ->
+		($scope.resetVisibility = () ->
+			$scope.visible = {}
+			$scope.visible.all = false
 			$scope.visible.loading = false
 			$scope.visible.more = false
 		)()
 
-		Queue.on 'add', (song) ->
-			$scope.songs = Queue.getAllSongs()
-			$scope.$apply()
+		$scope.songs = []
 
-		# YURK!
-		$scope.$on 'loadPosts', () =>
+		Queue.on 'add', (song) ->
+			$scope.$apply () ->
+				$scope.songs = Queue.getAllSongs()
+			
+		$scope.$on 'selectPage', (event, page) ->
+			$scope.visible.all = true
 			$scope.loadPosts()
-		# YURK!
-		$scope.$on 'uploadPosts', () =>
-			$scope.unloadPosts()
 
 		$scope.loadPosts = () ->
 			if !$scope.visible.loading # if not already loading
@@ -167,6 +192,7 @@ ready = () =>
 				len = $scope.songs.length
 
 				FBService.getPosts (err, posts) ->
+<<<<<<< HEAD
 					console.log posts
 
 					for post in posts
@@ -182,14 +208,18 @@ ready = () =>
 
 
 					$scope.$apply()
+=======
+					$scope.$apply () ->
+						for post in posts
+							song = new Song(post)
+>>>>>>> groups
 
-			return false
+							if song.playable
+								Queue.add(song)
 
-		$scope.unloadPosts = () ->
-			Queue.clear()
-			$scope.resetVisibility()
+						$scope.visible.loading = false
+						$scope.visible.more = len < $scope.songs.length
 
-			return false
 
 	app.controller 'ControlsCtrl', ($scope, Queue) ->
 		$scope.play = () ->
@@ -218,5 +248,154 @@ ready = () =>
 		Mousetrap.bind 'left', () ->
 			Queue.prev()
 			return false
+
+	app.controller 'PlayerCtrl', ($scope) ->
+		#
+
+
+	# app.controller 'PageCtrl', ($scope, $http, $rootScope, $location, FBService, Queue) ->
+	# 	console.log " --> PageCtrl"
+
+	# 	$scope.page = null
+	# 	$scope.url = $location.absUrl().split('/').pop()
+
+	# 	($scope.resetVisibility = () ->
+	# 		$scope.visible = {}
+	# 		$scope.visible.invalid = false
+	# 		$scope.visible.private = false
+	# 		$scope.visible.page = false
+	# 		$scope.visible.search = true
+	# 		$scope.visible.loading = false
+	# 	)()
+
+	# 	$scope.login = () ->
+	# 		FB.login (response) ->
+	# 			console.log "here new:"
+	# 			console.log response
+
+	# 			if response.status == "connected"
+	# 				$scope.loadPage()
+
+	# 		return false
+
+	# 	$scope.loadPage = () =>
+	# 		$scope.resetVisibility()
+	# 		$scope.visible.loading = true
+	# 		$scope.$apply()
+
+	# 		FBService.setPageUrl($scope.url)
+
+	# 		FBService.getPage (err, page) =>
+	# 			if err == "invalid"
+	# 				$scope.visible.invalid = true
+	# 			else if err == "private"
+	# 				$scope.visible.private = true
+	# 			else
+	# 				$scope.visible.search = false
+	# 				$scope.visible.page = true
+
+	# 				$scope.page = page
+
+	# 				$location.path(page.link.split('/').pop())
+	# 				$location.replace()
+
+	# 				# YURK!
+	# 				$rootScope.$broadcast("loadPosts")
+
+	# 			$scope.visible.loading = false
+	# 			$scope.$apply()
+
+	# 		return false
+
+	# 	$scope.unloadPage = () ->
+	# 		FBService.clear()
+
+	# 		$scope.page = null
+	# 		$scope.resetVisibility()
+
+	# 		$('#url-search').focus()
+
+	# 		# YURK!
+	# 		$rootScope.$broadcast("uploadPosts")
+
+	# 		return false
+
+	# app.controller 'SongCtrl', ($scope, $rootScope,FBService, Queue) ->
+	# 	console.log " --> SongCtrl"
+
+	# 	$scope.songs = []
+
+	# 	($scope.resetVisibility = () ->
+	# 		$scope.visible = {}
+	# 		$scope.visible.loading = false
+	# 		$scope.visible.more = false
+	# 	)()
+
+	# 	Queue.on 'add', (song) ->
+	# 		$scope.songs = Queue.getAllSongs()
+	# 		$scope.$apply()
+
+	# 	# YURK!
+	# 	$scope.$on 'loadPosts', () =>
+	# 		$scope.loadPosts()
+	# 	# YURK!
+	# 	$scope.$on 'uploadPosts', () =>
+	# 		$scope.unloadPosts()
+
+	# 	$scope.loadPosts = () ->
+	# 		if !$scope.visible.loading # if not already loading
+	# 			$scope.visible.more = false
+	# 			$scope.visible.loading = true
+
+	# 			len = $scope.songs.length
+
+	# 			FBService.getPosts (err, posts) ->
+	# 				for post in posts
+	# 					song = new Song(post)
+
+	# 					if song.playable
+	# 						Queue.add(song)
+
+	# 				$scope.visible.loading = false
+	# 				$scope.visible.more = len < $scope.songs.length
+
+
+	# 				$scope.$apply()
+
+	# 		return false
+
+	# 	$scope.unloadPosts = () ->
+	# 		Queue.clear()
+	# 		$scope.resetVisibility()
+
+	# 		return false
+
+	# app.controller 'ControlsCtrl', ($scope, Queue) ->
+	# 	$scope.play = () ->
+	# 		Queue.play()
+
+	# 	$scope.pause = () ->
+	# 		Queue.pause()
+
+	# 	$scope.stop = () ->
+	# 		Queue.stop()
+
+	# 	$scope.next = () ->
+	# 		Queue.next()
+
+	# 	$scope.prev = () ->
+	# 		Queue.prev()
+
+	# 	Mousetrap.bind 'space', () ->
+	# 		Queue.playOrPause()
+	# 		return false
+
+	# 	Mousetrap.bind 'right', () ->
+	# 		Queue.next()
+	# 		return false
+
+	# 	Mousetrap.bind 'left', () ->
+	# 		Queue.prev()
+	# 		return false
 
 	angular.bootstrap(document, ['PlaylistEverythingFacebookPlayer'])
