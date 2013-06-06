@@ -192,15 +192,14 @@ ready = () =>
 				len = $scope.songs.length
 
 				FBService.getPosts (err, posts) ->
-					$scope.$apply () ->
-						for post in posts
-							song = new Song(post)
+					for post in posts
+						song = new Song(post)
 
-							if song.playable
-								Queue.add(song)
+						if song.playable
+							Queue.add(song)
 
-						$scope.visible.loading = false
-						$scope.visible.more = len < $scope.songs.length
+					$scope.visible.loading = false
+					$scope.visible.more = len < $scope.songs.length
 
 
 	app.controller 'ControlsCtrl', ($scope, Queue) ->

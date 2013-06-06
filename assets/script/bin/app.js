@@ -191,19 +191,17 @@
           $scope.visible.loading = true;
           len = $scope.songs.length;
           return FBService.getPosts(function(err, posts) {
-            return $scope.$apply(function() {
-              var post, song, _i, _len;
+            var post, song, _i, _len;
 
-              for (_i = 0, _len = posts.length; _i < _len; _i++) {
-                post = posts[_i];
-                song = new Song(post);
-                if (song.playable) {
-                  Queue.add(song);
-                }
+            for (_i = 0, _len = posts.length; _i < _len; _i++) {
+              post = posts[_i];
+              song = new Song(post);
+              if (song.playable) {
+                Queue.add(song);
               }
-              $scope.visible.loading = false;
-              return $scope.visible.more = len < $scope.songs.length;
-            });
+            }
+            $scope.visible.loading = false;
+            return $scope.visible.more = len < $scope.songs.length;
           });
         }
       };
