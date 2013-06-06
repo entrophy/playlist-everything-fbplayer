@@ -1,5 +1,3 @@
-
-
 class @Player extends @PlayerAbstract
 
 	@Events: {
@@ -24,9 +22,15 @@ class @Player extends @PlayerAbstract
 			@_player.element(@id)
 			@_player.load(url.id, callback)
 
+		@_player
+
 	finish: (callback) ->
 		if @_player
 			@_player.finish(callback)
+
+	error: (callback) ->
+		if @_player
+			@_player.error(callback)
 
 	play: () ->
 		if @_player

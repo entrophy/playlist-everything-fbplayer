@@ -73,7 +73,7 @@ class @Queue
 	load: () ->
 		if @player
 			if (song = @songs[@index])
-				@player.load song.link, () =>
+				player = @player.load song.link, () =>
 					@player.finish () =>
 						@next()
 
@@ -84,10 +84,13 @@ class @Queue
 
 					return
 
+				player.error (error) =>
+					@next()
+
 	loadAndPlay: () ->
 		if @player
 			if (song = @songs[@index])
-				@player.load song.link, () =>
+				player = @player.load song.link, () =>
 					@player.finish () =>
 						@next()
 
@@ -98,6 +101,9 @@ class @Queue
 
 					if @index == @songs.length - 1
 						@emit 'last'
+
+				player.error (error) =>
+					@next()
 
 	isPlaying: () ->
 		return @playing
