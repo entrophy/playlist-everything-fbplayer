@@ -103,6 +103,7 @@ a:focus {
   padding: 8px;
 }
 .box h2,
+.box h3,
 .box h4 {
   margin: 0px 0px 0px 0px;
 }
@@ -207,7 +208,7 @@ ul.song-list li .origin:focus {
   right: 0;
 }
 .box-info p {
-  margin: 0px;
+  margin: 6px 0px 0px 0px;
 }
 a.more {
   display: block;
