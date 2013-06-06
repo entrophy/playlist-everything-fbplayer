@@ -127,10 +127,10 @@
           $scope.$apply(function() {
             return $scope.visible.loading = true;
           });
-          return FB.api('/me/groups', function(response) {
+          return FBService.getGroups(function(err, groups) {
             return $scope.$apply(function() {
               $scope.visible.loading = false;
-              return $scope.groups = response.data;
+              return $scope.groups = groups;
             });
           });
         }

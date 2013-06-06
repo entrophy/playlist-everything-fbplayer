@@ -121,10 +121,10 @@ ready = () =>
 				$scope.$apply () ->
 					$scope.visible.loading = true
 
-				FB.api '/me/groups', (response) ->
+				FBService.getGroups (err, groups) ->
 					$scope.$apply () ->
 						$scope.visible.loading = false
-						$scope.groups = response.data
+						$scope.groups = groups
 
 		$scope.selectGroup = (group) ->
 			$scope.visible.all = false

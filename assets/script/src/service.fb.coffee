@@ -4,6 +4,8 @@ class @FBService
 		@url = null
 		@nextUrl = null
 
+		@request = 0
+
 	setType: (@type) ->
 
 	setUrl: (url) ->
@@ -32,46 +34,65 @@ class @FBService
 		page = null
 
 		if @getUrl()
-			FB.api @getItemUrl(), (response) =>
-				if response.error
-					switch response.error.code
-						when 803 then err = "invalid"
-						else err = "private"
 
-					callback(err, page)
-				else
-					FB.api @getUrl(), (response) =>
+			do (r = @request) =>
+				FB.api @getItemUrl(), (response) =>
+					if r == @request
 						if response.error
 							switch response.error.code
 								when 803 then err = "invalid"
-								when 104 then err = "private"
+								else err = "private"
 
 							callback(err, page)
 						else
-							page = response
+							do (r = @request) =>
+								FB.api @getUrl(), (response) =>
+									if r == @request
+										if response.error
+											switch response.error.code
+												when 803 then err = "invalid"
+												when 104 then err = "private"
 
-							callback(err, page)
+											callback(err, page)
+										else
+											page = response
+
+											callback(err, page)
+
+	getGroups: (callback) ->
+		err = null
+		groups = []
+
+		do (r = @request) =>
+			FB.api '/me/groups', (response) =>
+				if r == @request
+					groups = response.data
+
+					callback(err, groups)
 
 	getItems: (callback) ->
 		err = null
 		items = []
 
-		FB.api @getNextItemUrl() , (response) =>
-			if response.error
-				switch response.error.code
-					when 803 then err = "invalid"
-					else err = "private"
+		do (r = @request) =>
+			FB.api @getNextItemUrl(), (response) =>
+				if r == @request
+					if response.error
+						switch response.error.code
+							when 803 then err = "invalid"
+							else err = "private"
 
-				callback(err, items)
-			else
-				if (response.paging)
-					@nextUrl = response.paging.next
+						callback(err, items)
+					else
+						if (response.paging)
+							@nextUrl = response.paging.next
 
-				items = response.data
+						items = response.data
 
-				callback(err, items)
+						callback(err, items)
 
 	clear: () ->
 		@type = null
 		@url = null
 		@nextUrl = null
+		@request++
