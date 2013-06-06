@@ -16,10 +16,11 @@ a:focus {
   text-decoration: none;
 }
 #facebook-login .box-facebook {
+  padding: 50px 0px 0px 0px;
   position: absolute;
   text-align: center;
-  height: 140px;
-  margin-top: -70px;
+  height: 142px;
+  margin-top: -71px;
   top: 45%;
 }
 #app-wrapper {
@@ -103,7 +104,6 @@ a:focus {
   padding: 8px;
 }
 .box h2,
-.box h3,
 .box h4 {
   margin: 0px 0px 0px 0px;
 }
