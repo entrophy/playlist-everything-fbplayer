@@ -48,6 +48,13 @@ An alternative to using the sublime text build system for coffeescript is to jus
 
 **Another! Important! Notice!** If you have any coffeescript package installed already in sublime, as for example the "CoffeeScript" package for neat syntax highlighting and stuff, you will probably have a build system reacting to coffeescript source files already. If you would like to use our build system, remember to comment out the existing coffeescript build system so they won't collide.
 
+## Updating the server
+
+        af login playlisteverything@gmail.com
+        (enter password)
+
+        af update playlisteverything
+
 ## Contribute? Chat? Yell at us? Drink a beer?
 
 Find us on the IRC freenode server! Channel #playlisteverything
