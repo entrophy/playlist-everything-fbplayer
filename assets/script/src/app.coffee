@@ -65,6 +65,7 @@ ready = () =>
 			FB.login (response) ->
 				if response.status == "connected"
 					$scope.visible = false
+			, { scope: 'user_groups' }
 					
 			return false
 

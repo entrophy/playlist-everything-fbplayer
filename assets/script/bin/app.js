@@ -73,6 +73,8 @@
           if (response.status === "connected") {
             return $scope.visible = false;
           }
+        }, {
+          scope: 'user_groups'
         });
         return false;
       };
