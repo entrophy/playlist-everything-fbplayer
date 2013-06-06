@@ -192,27 +192,9 @@ ready = () =>
 				len = $scope.songs.length
 
 				FBService.getPosts (err, posts) ->
-<<<<<<< HEAD
-					console.log posts
-
-					for post in posts
-						song = new Song(post)
-
-						###console.log post.caption
-						console.log song###
-						if song.playable
-							Queue.add(song)
-
-					$scope.visible.loading = false
-					$scope.visible.more = len < $scope.songs.length
-
-
-					$scope.$apply()
-=======
 					$scope.$apply () ->
 						for post in posts
 							song = new Song(post)
->>>>>>> groups
 
 							if song.playable
 								Queue.add(song)
