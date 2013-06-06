@@ -28,7 +28,6 @@
   ready = function() {
     var app;
 
-    console.log('DONE \\o/ The fun can start');
     $('#preloader').hide();
     $('#wrapper').show();
     FB.init({
@@ -216,7 +215,8 @@
       });
       return $scope.$on('deselect', function(event) {
         $scope.resetVisibility();
-        return Queue.clear();
+        Queue.clear();
+        return FBService.clear();
       });
     });
     app.controller('ControlsCtrl', function($scope, Queue) {

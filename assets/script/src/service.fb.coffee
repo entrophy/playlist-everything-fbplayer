@@ -1,6 +1,5 @@
 class @FBService
 	constructor: () ->
-		# @_posts = []
 		@type = null
 		@url = null
 		@nextUrl = null
@@ -27,56 +26,6 @@ class @FBService
 				@url + '/posts'
 			else if @type == 'group'
 				@url + '/feed'
-
-	# setPageUrl: (url) ->
-	# 	@_url = $.trim(url)
-
-	# getPageUrl: () ->
-	# 	@_url
-
-	# getPostUrl: () ->
-	# 	@_url + '/posts'
-
-	# getNextPostUrl: () ->
-	# 	if @_nextUrl
-	# 		@_nextUrl
-	# 	else
-	# 		@_url + '/posts'
-
-	# setGroupId: (id) ->
-	# 	@_id = id
-
-	# getGroupId: () ->
-	# 	@_id
-
-	# getFeedUrl: () ->
-	# 	@_id + '/feed'
-
-	# getNextFeedUrl: () ->
-	# 	if @_nextUrl
-	# 		@_nextUrl
-	# 	else
-	# 		@_id + '/feed'
-
-	# getGroup: (callback) ->
-	# 	err = null
-	# 	page = null
-
-	# 	console.log "get group"
-
-	# 	if @getPageUrl()
-	# 		url = 'https://www.facebook.com/groups/' + @getPageUrl() + '/'
-
-	# 		FB.api '/me/groups', (response) ->
-	# 			console.log response
-
-	# 			if response.error
-	# 				switch response.error.code
-	# 					else err = "private"
-
-	# 				callback(err, page)
-	# 			else
-	# 				console.log "GOT GROUPS LOL"
 
 	getPage: (callback) ->
 		err = null

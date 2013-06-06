@@ -24,8 +24,6 @@ window.fbAsyncInit = () =>
 	done()
 
 ready = () =>
-	console.log 'DONE \\o/ The fun can start'
-
 	$('#preloader').hide()
 	$('#wrapper').show()
 
@@ -108,7 +106,6 @@ ready = () =>
 
 		$scope.$on 'deselect', () ->
 			$scope.resetVisibility()
-
 
 	app.controller 'GroupCtrl', ($scope, $rootScope, FBService) ->
 		$scope.groups = []
@@ -214,7 +211,7 @@ ready = () =>
 		$scope.$on 'deselect', (event) ->
 			$scope.resetVisibility()
 			Queue.clear()
-
+			FBService.clear()
 
 	app.controller 'ControlsCtrl', ($scope, Queue) ->
 		$scope.play = () ->
