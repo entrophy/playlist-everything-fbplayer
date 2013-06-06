@@ -64,9 +64,9 @@
                 </div>
                 <div data-ng-controller="QueueCtrl">
                   <ul class="box-list song-list">
-                    <li data-ng-repeat="song in songs"> <span data-ng-bind="song.title" class="title"></span><span data-ng-bind="song.origin" class="origin"></span></li>
+                    <li data-ng-repeat="song in songs"> <span data-ng-bind="song.title" class="title"></span><span data-ng-bind="song.origin" class="origin pull-right"></span></li>
                   </ul>
-                  <div data-ng-show="visible.more" style="display: none;" class="more box"><a href="" data-ng-click="loadPosts()">Load more songs</a></div>
+                  <div data-ng-show="visible.more" style="display: none;" class="more box"><a href="" data-ng-click="loadSongs()">Load more songs</a></div>
                   <div data-ng-show="visible.loading" style="display: none;" class="preloader"></div>
                 </div>
               </div>

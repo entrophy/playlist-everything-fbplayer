@@ -1,23 +1,62 @@
 class @FBService
 	constructor: () ->
-		@_posts = []
-		@_url = null
-		@_nextUrl = null
+		# @_posts = []
+		@type = null
+		@url = null
+		@nextUrl = null
 
-	setPageUrl: (url) ->
-		@_url = $.trim(url)
+	setType: (@type) ->
 
-	getPageUrl: () ->
-		@_url
+	setUrl: (url) ->
+		@url = $.trim(url)
 
-	getPostUrl: () ->
-		@_url + '/posts'
+	getUrl: () ->
+		@url
 
-	getNextPostUrl: () ->
-		if @_nextUrl
-			@_nextUrl
-		else
+	getItemUrl: () ->
+		if @type == 'page'
 			@_url + '/posts'
+		else if @type == 'group'
+			@_url + '/feed'
+
+	getNextItemUrl: () ->
+		if @nextUrl
+			@nextUrl
+		else
+			if @type == 'page'
+				@url + '/posts'
+			else if @type == 'group'
+				@url + '/feed'
+
+	# setPageUrl: (url) ->
+	# 	@_url = $.trim(url)
+
+	# getPageUrl: () ->
+	# 	@_url
+
+	# getPostUrl: () ->
+	# 	@_url + '/posts'
+
+	# getNextPostUrl: () ->
+	# 	if @_nextUrl
+	# 		@_nextUrl
+	# 	else
+	# 		@_url + '/posts'
+
+	# setGroupId: (id) ->
+	# 	@_id = id
+
+	# getGroupId: () ->
+	# 	@_id
+
+	# getFeedUrl: () ->
+	# 	@_id + '/feed'
+
+	# getNextFeedUrl: () ->
+	# 	if @_nextUrl
+	# 		@_nextUrl
+	# 	else
+	# 		@_id + '/feed'
 
 	# getGroup: (callback) ->
 	# 	err = null
@@ -43,8 +82,8 @@ class @FBService
 		err = null
 		page = null
 
-		if @getPageUrl()
-			FB.api @getPostUrl(), (response) =>
+		if @getUrl()
+			FB.api @getItemUrl(), (response) =>
 				if response.error
 					switch response.error.code
 						when 803 then err = "invalid"
@@ -52,7 +91,7 @@ class @FBService
 
 					callback(err, page)
 				else
-					FB.api @getPageUrl(), (response) =>
+					FB.api @getUrl(), (response) =>
 						if response.error
 							switch response.error.code
 								when 803 then err = "invalid"
@@ -64,27 +103,26 @@ class @FBService
 
 							callback(err, page)
 
-	getPosts: (callback) ->
+	getItems: (callback) ->
 		err = null
-		posts = []
+		items = []
 
-		FB.api @getNextPostUrl() , (response) =>
+		FB.api @getNextItemUrl() , (response) =>
 			if response.error
 				switch response.error.code
 					when 803 then err = "invalid"
-					when 104 then err = "private"
+					else err = "private"
 
-				callback(err, posts)
+				callback(err, items)
 			else
 				if (response.paging)
-					@_nextUrl = response.paging.next
+					@nextUrl = response.paging.next
 
-				# posts = @_posts = @_posts.concat(response.data)
-				posts = response.data
+				items = response.data
 
-				callback(err, posts)
+				callback(err, items)
 
 	clear: () ->
-		@_posts = []
-		@_url = null
-		@_nextUrl = null
+		@type = null
+		@url = null
+		@nextUrl = null
