@@ -45,15 +45,21 @@
     };
 
     PlayerYoutube.prototype.play = function() {
-      return this._player.playVideo();
+      if (this._player) {
+        return this._player.playVideo();
+      }
     };
 
     PlayerYoutube.prototype.pause = function() {
-      return this._player.pauseVideo();
+      if (this._player) {
+        return this._player.pauseVideo();
+      }
     };
 
     PlayerYoutube.prototype.stop = function() {
-      return this._player.stopVideo();
+      if (this._player) {
+        return this._player.stopVideo();
+      }
     };
 
     PlayerYoutube.prototype.create = function() {

@@ -82,21 +82,22 @@ ready = () =>
 		)()
 
 		$scope.selectPage = () =>
-			$scope.resetVisibility()
-			$scope.visible.loading = true
+			if $scope.url
+				$scope.resetVisibility()
+				$scope.visible.loading = true
 
-			FBService.setType('page')
-			FBService.setUrl($scope.url)
+				FBService.setType('page')
+				FBService.setUrl($scope.url)
 
-			FBService.getPage (err, page) =>
-				$scope.$apply () ->
-					$scope.visible.loading = false
+				FBService.getPage (err, page) =>
+					$scope.$apply () ->
+						$scope.visible.loading = false
 
-					if err == "invalid"
-						$scope.visible.invalid = true
-					else
-						$scope.visible.all = false
-						$rootScope.$broadcast("selectPage", page)
+						if err == "invalid"
+							$scope.visible.invalid = true
+						else
+							$scope.visible.all = false
+							$rootScope.$broadcast("selectPage", page)
 				
 			return false
 
@@ -196,6 +197,12 @@ ready = () =>
 						$scope.visible.loading = false
 						$scope.visible.more = len < $scope.songs.length
 
+		$scope.play = (index) ->
+			Queue.playByIndex(index)
+
+		$scope.pause = () ->
+			Queue.pause()
+
 		Queue.on 'add', (song) ->
 			$scope.$apply () ->
 				$scope.songs = Queue.getAllSongs()
@@ -214,6 +221,8 @@ ready = () =>
 			FBService.clear()
 
 	app.controller 'ControlsCtrl', ($scope, Queue) ->
+		$scope.visible = false
+
 		$scope.play = () ->
 			Queue.play()
 
@@ -241,9 +250,12 @@ ready = () =>
 			Queue.prev()
 			return false
 
-	app.controller 'PlayerCtrl', ($scope) ->
+		$scope.$on 'select', (event) ->
+			$scope.visible = true
 
-		#
+		$scope.$on 'deselect', (event) ->
+			$scope.visible = false
+
 
 
 	# app.controller 'PageCtrl', ($scope, $http, $rootScope, $location, FBService, Queue) ->

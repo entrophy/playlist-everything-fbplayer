@@ -33,13 +33,13 @@
             <div class="row-fluid">
               <div class="span8 offset2">
                 <div data-ng-controller="InfoCtrl">
-                  <div data-ng-show="visible" style="display: none;" class="box">
+                  <div data-ng-show="visible" style="display: none;" class="box box-info">
                     <h4 data-ng-bind="title"></h4>
                     <p data-ng-bind="description"></p><a href="" data-ng-click="deselect()" class="close">&times;</a>
                   </div>
                 </div>
                 <div data-ng-controller="PageCtrl">
-                  <div data-ng-show="visible.all" style="display: none;" class="box page-find">
+                  <div data-ng-show="visible.all" style="display: none;" class="box box-page">
                     <h4>Find a page ...</h4>
                     <form data-ng-submit="selectPage()">
                       <input id="url-search" type="text" placeholder="Paste a Facebook page url ..." tabindex="1" autofocus data-ng-model="url" class="span11 pull-left"><a href="" data-ng-click="selectPage()" class="btn btn-success pull-right">Go!</a>
@@ -63,8 +63,8 @@
                   </div>
                 </div>
                 <div data-ng-controller="QueueCtrl">
-                  <ul class="box-list song-list">
-                    <li data-ng-repeat="song in songs"> <span data-ng-bind="song.title" class="title"></span><span data-ng-bind="song.origin" class="origin pull-right"></span></li>
+                  <ul class="song-list">
+                    <li data-ng-repeat="song in songs"><a href="" data-ng-click="play($index)" class="play"><i class="icon-play"></i></a><span data-ng-bind="song.title" class="title"></span><a href="{{song.link}}" data-ng-click="pause()" target="_blank" data-ng-bind="song.origin" class="origin"></a></li>
                   </ul>
                   <div data-ng-show="visible.more" style="display: none;" class="more box"><a href="" data-ng-click="loadSongs()">Load more songs</a></div>
                   <div data-ng-show="visible.loading" style="display: none;" class="preloader"></div>
@@ -74,17 +74,19 @@
           </div>
         </div>
       </div>
-      <div id="bottom-wrapper">
-        <div class="container-fluid">
-          <div class="row-fluid">
-            <div data-ng-controller="ControlsCtrl" class="span4 offset2">
-              <div id="buttons"><a data-ng-click="prev()" class="btn btn-large"><i class="icon-fast-backward"></i></a><a data-ng-click="play()" class="btn btn-large"><i class="icon-play"></i></a><a data-ng-click="pause()" class="btn btn-large"><i class="icon-pause"></i></a><a data-ng-click="stop()" class="btn btn-large"><i class="icon-stop"></i></a><a data-ng-click="next()" class="btn btn-large"><i class="icon-fast-forward"></i></a></div>
-            </div>
-            <div data-ng-controller="PlayerCtrl" class="span4">
-              <div class="player">
-                <div class="prevent"></div>
-                <div id="player"></div>
-                <div class="background"></div>
+      <div data-ng-controller="ControlsCtrl">
+        <div id="bottom-wrapper" data-ng-show="visible" style="display: none;">
+          <div class="container-fluid">
+            <div class="row-fluid">
+              <div class="span4 offset2">
+                <div id="buttons"><a data-ng-click="prev()" class="btn btn-large"><i class="icon-fast-backward"></i></a><a data-ng-click="play()" class="btn btn-large"><i class="icon-play"></i></a><a data-ng-click="pause()" class="btn btn-large"><i class="icon-pause"></i></a><a data-ng-click="stop()" class="btn btn-large"><i class="icon-stop"></i></a><a data-ng-click="next()" class="btn btn-large"><i class="icon-fast-forward"></i></a></div>
+              </div>
+              <div class="span4">
+                <div class="player">
+                  <div class="prevent"></div>
+                  <div id="player"></div>
+                  <div class="background"></div>
+                </div>
               </div>
             </div>
           </div>

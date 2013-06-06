@@ -32,14 +32,14 @@ html
 						.row-fluid
 							.span8.offset2
 								div(data-ng-controller="InfoCtrl")
-									.box(data-ng-show="visible", style="display: none;")
+									.box.box-info(data-ng-show="visible", style="display: none;")
 										h4(data-ng-bind="title")
 										p(data-ng-bind="description")
 
 										a.close(href="", data-ng-click="deselect()") &times;
 
 								div(data-ng-controller="PageCtrl")
-									.box.page-find(data-ng-show="visible.all", style="display: none;")
+									.box.box-page(data-ng-show="visible.all", style="display: none;")
 										h4 Find a page ...
 										form(data-ng-submit="selectPage()")
 											input#url-search.span11.pull-left(type="text", placeholder="Paste a Facebook page url ...", tabindex="1", autofocus, data-ng-model="url")
@@ -64,39 +64,40 @@ html
 										.preloader(data-ng-show="visible.loading", style="display: none;")
 
 								div(data-ng-controller="QueueCtrl")
-									ul.box-list.song-list
-										li(data-ng-repeat="song in songs") 
+									ul.song-list
+										li(data-ng-repeat="song in songs")
+											a.play(href="", data-ng-click="play($index)")
+												i.icon-play
 											span.title(data-ng-bind="song.title")
-											span.origin.pull-right(data-ng-bind="song.origin")
+											a.origin(href="{{song.link}}", data-ng-click="pause()", target="_blank", data-ng-bind="song.origin")
 
 									.more.box(data-ng-show="visible.more", style="display: none;")
 										a(href="", data-ng-click="loadSongs()") Load more songs
 
 									.preloader(data-ng-show="visible.loading", style="display: none;")
 
-			#bottom-wrapper
-				.container-fluid
-					.row-fluid
-						.span4.offset2(data-ng-controller="ControlsCtrl")
-							#buttons
-								a.btn.btn-large(data-ng-click="prev()")
-									i.icon-fast-backward
-								a.btn.btn-large(data-ng-click="play()")
-									i.icon-play
-								a.btn.btn-large(data-ng-click="pause()")
-									i.icon-pause
-								a.btn.btn-large(data-ng-click="stop()")
-									i.icon-stop
-								a.btn.btn-large(data-ng-click="next()")
-									i.icon-fast-forward
+			div(data-ng-controller="ControlsCtrl")
+				#bottom-wrapper(data-ng-show="visible", style="display: none;")
+					.container-fluid
+						.row-fluid
+							.span4.offset2
+								#buttons
+									a.btn.btn-large(data-ng-click="prev()")
+										i.icon-fast-backward
+									a.btn.btn-large(data-ng-click="play()")
+										i.icon-play
+									a.btn.btn-large(data-ng-click="pause()")
+										i.icon-pause
+									a.btn.btn-large(data-ng-click="stop()")
+										i.icon-stop
+									a.btn.btn-large(data-ng-click="next()")
+										i.icon-fast-forward
 
-						.span4(data-ng-controller="PlayerCtrl")
-							.player
-								.prevent
-								#player
-								.background
-
-
+							.span4
+								.player
+									.prevent
+									#player
+									.background
 
 			//- #queue-wrapper
 			//- 	.container-fluid
