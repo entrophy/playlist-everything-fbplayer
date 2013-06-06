@@ -24,8 +24,6 @@ window.fbAsyncInit = () =>
 	done()
 
 ready = () =>
-	console.log 'DONE \\o/ The fun can start'
-
 	$('#preloader').hide()
 	$('#wrapper').show()
 
@@ -87,7 +85,8 @@ ready = () =>
 			$scope.resetVisibility()
 			$scope.visible.loading = true
 
-			FBService.setPageUrl($scope.url)
+			FBService.setType('page')
+			FBService.setUrl($scope.url)
 
 			FBService.getPage (err, page) =>
 				$scope.$apply () ->
@@ -108,8 +107,7 @@ ready = () =>
 		$scope.$on 'deselect', () ->
 			$scope.resetVisibility()
 
-
-	app.controller 'GroupCtrl', ($scope, $rootScope) ->
+	app.controller 'GroupCtrl', ($scope, $rootScope, FBService) ->
 		$scope.groups = []
 
 		($scope.resetVisibility = () ->
@@ -130,6 +128,10 @@ ready = () =>
 
 		$scope.selectGroup = (group) ->
 			$scope.visible.all = false
+
+			FBService.setType('group')
+			FBService.setUrl(group.id)
+
 			$rootScope.$broadcast 'selectGroup', group
 
 		$scope.$on 'select', () ->
@@ -176,16 +178,16 @@ ready = () =>
 
 		$scope.songs = []
 
-		$scope.loadPosts = () ->
+		$scope.loadSongs = () ->
 			if !$scope.visible.loading # if not already loading
 				$scope.visible.more = false
 				$scope.visible.loading = true
 
 				len = $scope.songs.length
 
-				FBService.getPosts (err, posts) ->
-					for post in posts
-						song = new Song(post)
+				FBService.getItems (err, items) ->
+					for item in items
+						song = new Song(item)
 
 						if song.playable
 							Queue.add(song)
@@ -200,12 +202,16 @@ ready = () =>
 			
 		$scope.$on 'selectPage', (event, page) ->
 			$scope.visible.all = true
-			$scope.loadPosts()
+			$scope.loadSongs()
+
+		$scope.$on 'selectGroup', (event, group) ->
+			$scope.visible.all = true
+			$scope.loadSongs()
 
 		$scope.$on 'deselect', (event) ->
 			$scope.resetVisibility()
 			Queue.clear()
-
+			FBService.clear()
 
 	app.controller 'ControlsCtrl', ($scope, Queue) ->
 		$scope.play = () ->

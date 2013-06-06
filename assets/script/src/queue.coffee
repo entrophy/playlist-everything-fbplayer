@@ -90,7 +90,6 @@ class @Queue
 	isPlaying: () ->
 		return @playing
 
-
 	on: (event, callback) ->
 		(@callbacks[event] = @callbacks[event] || []).push(callback)
 

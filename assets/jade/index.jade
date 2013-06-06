@@ -67,10 +67,10 @@ html
 									ul.box-list.song-list
 										li(data-ng-repeat="song in songs") 
 											span.title(data-ng-bind="song.title")
-											span.origin(data-ng-bind="song.origin")
+											span.origin.pull-right(data-ng-bind="song.origin")
 
 									.more.box(data-ng-show="visible.more", style="display: none;")
-										a(href="", data-ng-click="loadPosts()") Load more songs
+										a(href="", data-ng-click="loadSongs()") Load more songs
 
 									.preloader(data-ng-show="visible.loading", style="display: none;")
 

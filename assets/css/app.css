@@ -132,10 +132,8 @@ ul.song-list li:after {
 }
 .more a {
   display: block;
-  padding: 6px 8px 8px 8px;
   text-align: center;
 }
-#fb-button,
 input[type="text"] {
   -webkit-border-radius: 0px;
   border-radius: 0px;
@@ -146,7 +144,6 @@ input[type="text"] {
   min-height: auto;
   height: auto;
 }
-#fb-button:focus,
 input[type="text"]:focus {
   border-color: rgba(255,153,0,0.8);
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(255,153,0,0.6);

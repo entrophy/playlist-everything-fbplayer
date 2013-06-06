@@ -28,7 +28,6 @@
   ready = function() {
     var app;
 
-    console.log('DONE \\o/ The fun can start');
     $('#preloader').hide();
     $('#wrapper').show();
     FB.init({
@@ -91,7 +90,8 @@
       $scope.selectPage = function() {
         $scope.resetVisibility();
         $scope.visible.loading = true;
-        FBService.setPageUrl($scope.url);
+        FBService.setType('page');
+        FBService.setUrl($scope.url);
         FBService.getPage(function(err, page) {
           return $scope.$apply(function() {
             $scope.visible.loading = false;
@@ -113,7 +113,7 @@
         return $scope.resetVisibility();
       });
     });
-    app.controller('GroupCtrl', function($scope, $rootScope) {
+    app.controller('GroupCtrl', function($scope, $rootScope, FBService) {
       $scope.groups = [];
       ($scope.resetVisibility = function() {
         $scope.visible = {};
@@ -135,6 +135,8 @@
       });
       $scope.selectGroup = function(group) {
         $scope.visible.all = false;
+        FBService.setType('group');
+        FBService.setUrl(group.id);
         return $rootScope.$broadcast('selectGroup', group);
       };
       $scope.$on('select', function() {
@@ -174,19 +176,19 @@
         return $scope.visible.more = false;
       })();
       $scope.songs = [];
-      $scope.loadPosts = function() {
+      $scope.loadSongs = function() {
         var len;
 
         if (!$scope.visible.loading) {
           $scope.visible.more = false;
           $scope.visible.loading = true;
           len = $scope.songs.length;
-          return FBService.getPosts(function(err, posts) {
-            var post, song, _i, _len;
+          return FBService.getItems(function(err, items) {
+            var item, song, _i, _len;
 
-            for (_i = 0, _len = posts.length; _i < _len; _i++) {
-              post = posts[_i];
-              song = new Song(post);
+            for (_i = 0, _len = items.length; _i < _len; _i++) {
+              item = items[_i];
+              song = new Song(item);
               if (song.playable) {
                 Queue.add(song);
               }
@@ -205,11 +207,16 @@
       });
       $scope.$on('selectPage', function(event, page) {
         $scope.visible.all = true;
-        return $scope.loadPosts();
+        return $scope.loadSongs();
+      });
+      $scope.$on('selectGroup', function(event, group) {
+        $scope.visible.all = true;
+        return $scope.loadSongs();
       });
       return $scope.$on('deselect', function(event) {
         $scope.resetVisibility();
-        return Queue.clear();
+        Queue.clear();
+        return FBService.clear();
       });
     });
     app.controller('ControlsCtrl', function($scope, Queue) {
