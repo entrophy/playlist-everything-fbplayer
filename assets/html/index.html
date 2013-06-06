@@ -14,10 +14,7 @@
         <div id="facebook-login" data-ng-show="visible" style="display: none;">
           <div class="container-fluid">
             <div class="row-fluid">
-              <div class="span12">&nbsp;</div>
-            </div>
-            <div class="row-fluid">
-              <div class="span4 offset4 box">
+              <div class="span4 offset4 box box-facebook">
                 <h3>Baah! Facebook</h3><a href="" data-ng-click="login()" class="btn btn-primary btn-large">Login with Facebook</a>
               </div>
             </div>
@@ -28,7 +25,7 @@
         <div id="app-wrapper" data-ng-show="visible" style="display: none;">
           <div class="container-fluid">
             <div class="row-fluid">
-              <div class="span12">&nbsp;</div>
+              <div class="span12"></div>
             </div>
             <div class="row-fluid">
               <div class="span8 offset2">
@@ -42,7 +39,11 @@
                   <div data-ng-show="visible.all" style="display: none;" class="box box-page">
                     <h4>Find a page ...</h4>
                     <form data-ng-submit="selectPage()">
-                      <input id="url-search" type="text" placeholder="Paste a Facebook page url ..." tabindex="1" autofocus data-ng-model="url" class="span11 pull-left"><a href="" data-ng-click="selectPage()" class="btn btn-success pull-right">Go!</a>
+                      <div class="controls">
+                        <div class="input">
+                          <input type="text" placeholder="Paste a Facebook page url ..." tabindex="1" autofocus data-ng-model="url" class="input-block-level">
+                        </div><a href="" data-ng-click="selectPage()" class="btn btn-success">Go!</a>
+                      </div>
                       <input type="submit" hidefocus class="fake-submit">
                     </form>
                   </div>
@@ -65,8 +66,7 @@
                 <div data-ng-controller="QueueCtrl">
                   <ul class="song-list">
                     <li data-ng-repeat="song in songs" data-ng-class="{ current: $index == current }"><a href="" data-ng-click="play($index)" class="play"><i class="icon-play"></i></a><span data-ng-bind="song.title" class="title"></span><a href="{{song.link}}" data-ng-click="pause()" target="_blank" data-ng-bind="song.origin" class="origin"></a></li>
-                  </ul>
-                  <div data-ng-show="visible.more" style="display: none;" class="more box"><a href="" data-ng-click="loadSongs()">Load more songs</a></div>
+                  </ul><a href="" data-ng-click="loadSongs()" data-ng-show="visible.more" style="display: none;" class="box more">Load more songs</a>
                   <div data-ng-show="visible.loading" style="display: none;" class="preloader"></div>
                 </div>
               </div>

@@ -17,17 +17,16 @@ html
 				#facebook-login(data-ng-show="visible", style="display: none;")
 					.container-fluid
 						.row-fluid
-							.span12 &nbsp;
-						.row-fluid
-							.span4.offset4.box
+							.span4.offset4.box.box-facebook
 								h3 Baah! Facebook
 								a.btn.btn-primary.btn-large(href="", data-ng-click="login()") Login with Facebook
 
 			div(data-ng-controller="AppCtrl")
 				#app-wrapper(data-ng-show="visible", style="display: none;")
+
 					.container-fluid
 						.row-fluid
-							.span12 &nbsp;
+							.span12
 
 						.row-fluid
 							.span8.offset2
@@ -42,8 +41,11 @@ html
 									.box.box-page(data-ng-show="visible.all", style="display: none;")
 										h4 Find a page ...
 										form(data-ng-submit="selectPage()")
-											input#url-search.span11.pull-left(type="text", placeholder="Paste a Facebook page url ...", tabindex="1", autofocus, data-ng-model="url")
-											a.btn.btn-success.pull-right(href="", data-ng-click="selectPage()") Go!
+
+											.controls
+												.input
+													input.input-block-level(type="text", placeholder="Paste a Facebook page url ...", tabindex="1", autofocus, data-ng-model="url")
+												a.btn.btn-success(href="", data-ng-click="selectPage()") Go!
 
 											input.fake-submit(type="submit", hidefocus)
 
@@ -71,8 +73,7 @@ html
 											span.title(data-ng-bind="song.title")
 											a.origin(href="{{song.link}}", data-ng-click="pause()", target="_blank", data-ng-bind="song.origin")
 
-									.more.box(data-ng-show="visible.more", style="display: none;")
-										a(href="", data-ng-click="loadSongs()") Load more songs
+									a.box.more(href="", data-ng-click="loadSongs()", data-ng-show="visible.more", style="display: none;") Load more songs
 
 									.preloader(data-ng-show="visible.loading", style="display: none;")
 
@@ -98,73 +99,6 @@ html
 									.prevent
 									#player
 									.background
-
-			//- #queue-wrapper
-			//- 	.container-fluid
-			//- 		.row-fluid
-			//- 			.span12 &nbsp;
-
-			//- 		.row-fluid(data-ng-controller="PageCtrl")
-			//- 			.span8.offset2
-			//- 				.box.search(data-ng-show="visible.search")
-			//- 					h4 Create a playlist
-			//- 					form(data-ng-submit="loadPage()")
-			//- 						input#url-search.span11.pull-left(type="text", placeholder="Paste a Facebook group or page url and press enter...", tabindex="1", autofocus, data-ng-model="url")
-			//- 						a.btn.btn-success.pull-right(href="", data-ng-click="loadPage()") Go!
-
-			//- 						input.fake-submit(type="submit", hidefocus)
-
-			//- 				.box.page(data-ng-show="visible.page", style="display: none;")
-			//- 					h2(data-ng-bind="page.name")
-			//- 					p(data-ng-bind="page.about")
-
-			//- 					a.close(href="", data-ng-click="unloadPage()") &times;
-
-			//- 				.box.facebook-invalid(data-ng-show="visible.invalid", style="display: none;")
-			//- 					h4 No page or group found
-
-			//- 				.box.facebook-login(data-ng-show="visible.private", style="display: none;")
-			//- 					h4 This page or group requires facebook login
-
-			//- 					a.btn.btn-primary.btn-large(href="", data-ng-click="login()") Login with Facebook
-							
-			//- 					// fb:login-button#fb-button(size="large") Login with facebook
-
-			//- 				.preloader(data-ng-show="visible.loading", style="display: none;")
-
-			//- 		.row-fluid(data-ng-controller="SongCtrl")
-			//- 			.span8.offset2
-			//- 				ul.box-list.song-list
-			//- 					li(data-ng-repeat="song in songs") 
-			//- 						span.title(data-ng-bind="song.title")
-			//- 						span.origin(data-ng-bind="song.origin")
-
-			//- 				.more.box(data-ng-show="visible.more", style="display: none;")
-			//- 					a(href="", data-ng-click="loadPosts()") Load more songs
-
-			//- 				.preloader(data-ng-show="visible.loading", style="display: none;")
-
-			//- #player-wrapper
-			//- 	.container-fluid
-			//- 		.row-fluid
-			//- 			.span4.offset2(data-ng-controller="ControlsCtrl")
-			//- 				#buttons
-			//- 					a.btn.btn-large(data-ng-click="prev()")
-			//- 						i.icon-fast-backward
-			//- 					a.btn.btn-large(data-ng-click="play()")
-			//- 						i.icon-play
-			//- 					a.btn.btn-large(data-ng-click="pause()")
-			//- 						i.icon-pause
-			//- 					a.btn.btn-large(data-ng-click="stop()")
-			//- 						i.icon-stop
-			//- 					a.btn.btn-large(data-ng-click="next()")
-			//- 						i.icon-fast-forward
-
-			//- 			.span4
-			//- 				.player
-			//- 					.prevent
-			//- 					#player
-			//- 					.background
 
 		script
 			var require = {

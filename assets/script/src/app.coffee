@@ -23,8 +23,11 @@ window.fbAsyncInit = () =>
 	done()
 
 ready = () =>
-	$('#preloader').hide()
-	$('#wrapper').show()
+	app = angular.module('PlaylistEverythingFacebookPlayer', []).config ($locationProvider) ->
+		$locationProvider.html5Mode(true)
+
+	app.service 'FBService', @FBService
+	app.service 'Queue', @Queue
 
 	FB.init({
 		appId: '228230950634896',
@@ -34,11 +37,9 @@ ready = () =>
 		xfbml: true
 	});
 
-	app = angular.module('PlaylistEverythingFacebookPlayer', []).config ($locationProvider) ->
-		$locationProvider.html5Mode(true)
-
-	app.service 'FBService', @FBService
-	app.service 'Queue', @Queue
+	FB.getLoginStatus (response) ->
+		$('#preloader').hide()
+		$('#wrapper').show()
 
 	app.controller 'LoginCtrl', ($scope) ->
 		$scope.visible = false
@@ -60,7 +61,6 @@ ready = () =>
 					
 			return false
 
-
 	app.controller 'AppCtrl', ($scope) ->
 		$scope.visible = false
 
@@ -68,6 +68,9 @@ ready = () =>
 			if response.status == "connected"
 				$scope.$apply () ->
 					$scope.visible = true
+			else
+				$scope.$apply () ->
+					$scope.visible = false
 
 
 	app.controller 'PageCtrl', ($scope, $rootScope, FBService) ->
@@ -125,6 +128,10 @@ ready = () =>
 					$scope.$apply () ->
 						$scope.visible.loading = false
 						$scope.groups = groups
+			else
+				$scope.$apply () ->
+					$scope.visible.loading = false
+
 
 		$scope.selectGroup = (group) ->
 			$scope.visible.all = false

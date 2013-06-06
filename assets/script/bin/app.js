@@ -28,8 +28,11 @@
   ready = function() {
     var app;
 
-    $('#preloader').hide();
-    $('#wrapper').show();
+    app = angular.module('PlaylistEverythingFacebookPlayer', []).config(function($locationProvider) {
+      return $locationProvider.html5Mode(true);
+    });
+    app.service('FBService', _this.FBService);
+    app.service('Queue', _this.Queue);
     FB.init({
       appId: '228230950634896',
       channelUrl: '/fb-channel',
@@ -37,11 +40,10 @@
       cookie: true,
       xfbml: true
     });
-    app = angular.module('PlaylistEverythingFacebookPlayer', []).config(function($locationProvider) {
-      return $locationProvider.html5Mode(true);
+    FB.getLoginStatus(function(response) {
+      $('#preloader').hide();
+      return $('#wrapper').show();
     });
-    app.service('FBService', _this.FBService);
-    app.service('Queue', _this.Queue);
     app.controller('LoginCtrl', function($scope) {
       $scope.visible = false;
       FB.getLoginStatus(function(response) {
@@ -73,6 +75,10 @@
         if (response.status === "connected") {
           return $scope.$apply(function() {
             return $scope.visible = true;
+          });
+        } else {
+          return $scope.$apply(function() {
+            return $scope.visible = false;
           });
         }
       });
@@ -132,6 +138,10 @@
               $scope.visible.loading = false;
               return $scope.groups = groups;
             });
+          });
+        } else {
+          return $scope.$apply(function() {
+            return $scope.visible.loading = false;
           });
         }
       });
