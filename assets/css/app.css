@@ -159,10 +159,13 @@ ul.song-list li .origin {
   width: 120px;
   text-align: center;
 }
-.page-find h4 {
+.box-page h4 {
   margin: 0px 0px 8px 0px;
 }
-.page-find form {
+.box-page form {
+  margin: 0px;
+}
+.box-info p {
   margin: 0px;
 }
 .more a {
