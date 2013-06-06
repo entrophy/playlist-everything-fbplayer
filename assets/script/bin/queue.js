@@ -89,6 +89,9 @@
               return _this.next();
             });
             _this.emit('change', [song, _this.index]);
+            if (_this.index === _this.songs.length - 1) {
+              _this.emit('last');
+            }
           });
           return player.error(function(error) {
             return _this.next();
@@ -109,7 +112,10 @@
             if (_this.isPlaying()) {
               _this.play();
             }
-            return _this.emit('change', [song, _this.index]);
+            _this.emit('change', [song, _this.index]);
+            if (_this.index === _this.songs.length - 1) {
+              return _this.emit('last');
+            }
           });
           return player.error(function(error) {
             return _this.next();
@@ -128,6 +134,9 @@
 
     Queue.prototype.emit = function(event, args) {
       var callback, _i, _len, _ref, _results;
+      if (args == null) {
+        args = [];
+      }
       _ref = this.callbacks[event] || [];
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {

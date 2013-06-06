@@ -79,6 +79,9 @@ class @Queue
 
 					@emit 'change', [song, @index]
 
+					if @index == @songs.length - 1
+						@emit 'last'
+
 					return
 
 				player.error (error) =>
@@ -96,6 +99,9 @@ class @Queue
 
 					@emit 'change', [song, @index]
 
+					if @index == @songs.length - 1
+						@emit 'last'
+
 				player.error (error) =>
 					@next()
 
@@ -105,7 +111,7 @@ class @Queue
 	on: (event, callback) ->
 		(@callbacks[event] = @callbacks[event] || []).push(callback)
 
-	emit: (event, args) ->
+	emit: (event, args = []) ->
 		for callback in @callbacks[event] || []
 			callback.apply(@, args)
 

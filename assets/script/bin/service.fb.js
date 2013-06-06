@@ -5,6 +5,7 @@
       this.type = null;
       this.url = null;
       this.nextUrl = null;
+      this.request = 0;
     }
 
     FBService.prototype.setType = function(type) {
@@ -46,35 +47,59 @@
       err = null;
       page = null;
       if (this.getUrl()) {
-        return FB.api(this.getItemUrl(), function(response) {
-          if (response.error) {
-            switch (response.error.code) {
-              case 803:
-                err = "invalid";
-                break;
-              default:
-                err = "private";
-            }
-            return callback(err, page);
-          } else {
-            return FB.api(_this.getUrl(), function(response) {
+        return (function(r) {
+          return FB.api(_this.getItemUrl(), function(response) {
+            if (r === _this.request) {
               if (response.error) {
                 switch (response.error.code) {
                   case 803:
                     err = "invalid";
                     break;
-                  case 104:
+                  default:
                     err = "private";
                 }
                 return callback(err, page);
               } else {
-                page = response;
-                return callback(err, page);
+                return (function(r) {
+                  return FB.api(_this.getUrl(), function(response) {
+                    if (r === _this.request) {
+                      if (response.error) {
+                        switch (response.error.code) {
+                          case 803:
+                            err = "invalid";
+                            break;
+                          case 104:
+                            err = "private";
+                        }
+                        return callback(err, page);
+                      } else {
+                        page = response;
+                        return callback(err, page);
+                      }
+                    }
+                  });
+                })(_this.request);
               }
-            });
+            }
+          });
+        })(this.request);
+      }
+    };
+
+    FBService.prototype.getGroups = function(callback) {
+      var err, groups,
+        _this = this;
+
+      err = null;
+      groups = [];
+      return (function(r) {
+        return FB.api('/me/groups', function(response) {
+          if (r === _this.request) {
+            groups = response.data;
+            return callback(err, groups);
           }
         });
-      }
+      })(this.request);
     };
 
     FBService.prototype.getItems = function(callback) {
@@ -83,30 +108,35 @@
 
       err = null;
       items = [];
-      return FB.api(this.getNextItemUrl(), function(response) {
-        if (response.error) {
-          switch (response.error.code) {
-            case 803:
-              err = "invalid";
-              break;
-            default:
-              err = "private";
+      return (function(r) {
+        return FB.api(_this.getNextItemUrl(), function(response) {
+          if (r === _this.request) {
+            if (response.error) {
+              switch (response.error.code) {
+                case 803:
+                  err = "invalid";
+                  break;
+                default:
+                  err = "private";
+              }
+              return callback(err, items);
+            } else {
+              if (response.paging) {
+                _this.nextUrl = response.paging.next;
+              }
+              items = response.data;
+              return callback(err, items);
+            }
           }
-          return callback(err, items);
-        } else {
-          if (response.paging) {
-            _this.nextUrl = response.paging.next;
-          }
-          items = response.data;
-          return callback(err, items);
-        }
-      });
+        });
+      })(this.request);
     };
 
     FBService.prototype.clear = function() {
       this.type = null;
       this.url = null;
-      return this.nextUrl = null;
+      this.nextUrl = null;
+      return this.request++;
     };
 
     return FBService;

@@ -11,7 +11,7 @@
     }
   };
 
-  define(['jquery', 'underscore', 'angular', 'youtube', 'facebook', 'soundcloud', 'mousetrap', 'jquery.xdomainajax'], function() {
+  define(['jquery', 'underscore', 'angular', 'youtube', 'facebook', 'soundcloud', 'mousetrap'], function() {
     return $(document).ready(function() {
       return done();
     });
@@ -125,10 +125,10 @@
           $scope.$apply(function() {
             return $scope.visible.loading = true;
           });
-          return FB.api('/me/groups', function(response) {
+          return FBService.getGroups(function(err, groups) {
             return $scope.$apply(function() {
               $scope.visible.loading = false;
-              return $scope.groups = response.data;
+              return $scope.groups = groups;
             });
           });
         }
@@ -213,6 +213,11 @@
       Queue.on('change', function(song, index) {
         return $scope.$apply(function() {
           return $scope.current = index;
+        });
+      });
+      Queue.on('last', function() {
+        return $scope.$apply(function() {
+          return $scope.loadSongs();
         });
       });
       $scope.$on('selectPage', function(event, page) {

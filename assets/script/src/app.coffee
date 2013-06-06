@@ -11,8 +11,7 @@ define [
 	'facebook',
 	'soundcloud',
 
-	'mousetrap',
-	'jquery.xdomainajax'
+	'mousetrap'
 ], () ->
 	$(document).ready () ->
 		done()
@@ -122,10 +121,10 @@ ready = () =>
 				$scope.$apply () ->
 					$scope.visible.loading = true
 
-				FB.api '/me/groups', (response) ->
+				FBService.getGroups (err, groups) ->
 					$scope.$apply () ->
 						$scope.visible.loading = false
-						$scope.groups = response.data
+						$scope.groups = groups
 
 		$scope.selectGroup = (group) ->
 			$scope.visible.all = false
@@ -211,6 +210,10 @@ ready = () =>
 		Queue.on 'change', (song, index) ->
 			$scope.$apply () ->
 				$scope.current = index
+
+		Queue.on 'last', () ->
+			$scope.$apply () ->
+				$scope.loadSongs()
 			
 		$scope.$on 'selectPage', (event, page) ->
 			$scope.visible.all = true
