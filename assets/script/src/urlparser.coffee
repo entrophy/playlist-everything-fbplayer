@@ -7,4 +7,6 @@ class @UrlParser
 			@id = @url
 
 		if @type == 'youtube'
-			@id = @url.split('?v=').pop()
+			regex = /(?:https?\:\/\/)?\/\/(?:[0-9A-Z-]+\.)?(?:youtu\.be\/|youtube\.com\S*[^\w\-\s])([\w\-]{11})(?=[^\w\-]|$)(?![?=&+%\w]*(?:['"][^<>]*>|<\/a>))[?=&+%\w-]*/ig
+			matches = regex.exec @url
+			@id = matches[1]

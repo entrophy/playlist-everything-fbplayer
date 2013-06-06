@@ -16,7 +16,6 @@ class @Player extends @PlayerAbstract
 
 		if url.type == 'soundcloud'
 			@_player = new PlayerSoundcloud()
-			console.log @id
 			@_player.element(@id)
 			@_player.load(url.id, callback)
 
