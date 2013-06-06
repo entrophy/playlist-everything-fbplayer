@@ -51,7 +51,6 @@ class @FBService
 						when 803 then err = "invalid"
 						else err = "private"
 
-					console.log "HER FØRST"
 					callback(err, page)
 				else
 					FB.api @getPageUrl(), (response) =>
@@ -64,7 +63,6 @@ class @FBService
 						else
 							page = response
 
-							console.log "HER BAGEFTER"
 							callback(err, page)
 
 	getPosts: (callback) ->

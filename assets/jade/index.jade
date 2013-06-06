@@ -24,44 +24,77 @@ html
 								a.btn.btn-primary.btn-large(href="", data-ng-click="login()") Login with Facebook
 
 			div(data-ng-controller="AppCtrl")
-				.container-fluid(data-ng-show="visible", style="display: none;")
+				#app-wrapper(data-ng-show="visible", style="display: none;")
+					.container-fluid
+						.row-fluid
+							.span12 &nbsp;
+
+						.row-fluid
+							.span8.offset2
+								div(data-ng-controller="InfoCtrl")
+									.box(data-ng-show="visible", style="display: none;")
+										h4(data-ng-bind="title")
+										p(data-ng-bind="description")
+
+										a.close(href="", data-ng-click="deselect()") &times;
+
+								div(data-ng-controller="PageCtrl")
+									.box.page-find(data-ng-show="visible.all", style="display: none;")
+										h4 Find a page ...
+										form(data-ng-submit="selectPage()")
+											input#url-search.span11.pull-left(type="text", placeholder="Paste a Facebook page url ...", tabindex="1", autofocus, data-ng-model="url")
+											a.btn.btn-success.pull-right(href="", data-ng-click="selectPage()") Go!
+
+											input.fake-submit(type="submit", hidefocus)
+
+									.box.facebook-invalid(data-ng-show="visible.invalid", style="display: none;")
+										h4 No page found
+
+									.preloader(data-ng-show="visible.loading", style="display: none;")
+
+								div(data-ng-controller="GroupCtrl")
+									div(data-ng-show="visible.all", style="display: none;")
+										.box
+											h4 ... or choose a group!
+
+										ul.box-list
+											li(data-ng-repeat="group in groups")
+												a(href="", data-ng-click="selectGroup(group)", data-ng-bind="group.name")
+
+										.preloader(data-ng-show="visible.loading", style="display: none;")
+
+								div(data-ng-controller="QueueCtrl")
+									ul.box-list.song-list
+										li(data-ng-repeat="song in songs") 
+											span.title(data-ng-bind="song.title")
+											span.origin(data-ng-bind="song.origin")
+
+									.more.box(data-ng-show="visible.more", style="display: none;")
+										a(href="", data-ng-click="loadPosts()") Load more songs
+
+									.preloader(data-ng-show="visible.loading", style="display: none;")
+
+			#bottom-wrapper
+				.container-fluid
 					.row-fluid
-						.span12 &nbsp;
-
-					.row-fluid
-						.span12(data-ng-controller="UserCtrl")
-							.box
-								h4(data-ng-bind="user.name")
-
-					.row-fluid
-						.span3
-							div(data-ng-controller="PageCtrl")
-								.box
-									h4 Page
-
-							div(data-ng-controller="GroupCtrl")
-								.box
-									h4 Groups {{test}}
-
-								ul.box-list
-									li(data-ng-repeat="group in groups")
-										a(href="", data-ng-click="select(group)", data-ng-bind="group.name")
-
-						.span5
-							div(data-ng-controller="InfoCtrl")
-								.box
-									h4 Info
-									p(data-ng-bind="title")
-									p(data-ng-bind="description")
-
-
-							div(data-ng-controller="QueueCtrl")
-								.box
-									h4 Queue
+						.span4.offset2(data-ng-controller="ControlsCtrl")
+							#buttons
+								a.btn.btn-large(data-ng-click="prev()")
+									i.icon-fast-backward
+								a.btn.btn-large(data-ng-click="play()")
+									i.icon-play
+								a.btn.btn-large(data-ng-click="pause()")
+									i.icon-pause
+								a.btn.btn-large(data-ng-click="stop()")
+									i.icon-stop
+								a.btn.btn-large(data-ng-click="next()")
+									i.icon-fast-forward
 
 						.span4(data-ng-controller="PlayerCtrl")
-							.box
-								h4 Player
+							.player
+								.prevent
+								#player
+								.background
 
 
 

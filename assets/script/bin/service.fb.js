@@ -44,7 +44,6 @@
               default:
                 err = "private";
             }
-            console.log("HER FØRST");
             return callback(err, page);
           } else {
             return FB.api(_this.getPageUrl(), function(response) {
@@ -59,7 +58,6 @@
                 return callback(err, page);
               } else {
                 page = response;
-                console.log("HER BAGEFTER");
                 return callback(err, page);
               }
             });

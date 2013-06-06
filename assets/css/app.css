@@ -10,23 +10,23 @@ body {
   padding: 0px 0px 20px 0px;
   text-align: center;
 }
-#queue-wrapper {
+#app-wrapper {
   padding-bottom: 260px;
 }
-#player-wrapper {
+#bottom-wrapper {
   position: fixed;
   width: 100%;
   bottom: 0px;
   height: 150px;
   background: rgba(0,0,0,0.6);
 }
-#player-wrapper .player {
+#bottom-wrapper .player {
   position: relative;
   float: left;
   top: -75px;
   padding: 8px;
 }
-#player-wrapper .prevent {
+#bottom-wrapper .prevent {
   position: absolute;
   z-index: 2;
   top: 0px;
@@ -34,7 +34,7 @@ body {
   width: 100%;
   height: 100%;
 }
-#player-wrapper .background {
+#bottom-wrapper .background {
   background: rgba(0,0,0,0.6);
   position: absolute;
   top: 0px;
@@ -42,17 +42,17 @@ body {
   width: 100%;
   height: 75px;
 }
-#player-wrapper #player {
+#bottom-wrapper #player {
   position: relative;
   z-index: 1;
   height: 200px;
   width: 328px;
 }
-#player-wrapper #buttons {
+#bottom-wrapper #buttons {
   text-align: center;
   margin-top: 52px;
 }
-#player-wrapper #buttons .btn {
+#bottom-wrapper #buttons .btn {
   margin: 1px;
 }
 .fake-submit {
@@ -89,8 +89,6 @@ body {
   background: rgba(255,255,255,0.6);
   margin: 0px 0px 8px 0px;
   padding: 8px;
-  -webkit-border-radius: 2px;
-  border-radius: 2px;
 }
 .box h2,
 .box h4 {
@@ -114,8 +112,6 @@ ul.box-list li {
   background: rgba(255,255,255,0.6);
   margin: 0px 0px 2px 0px;
   padding: 8px;
-  -webkit-border-radius: 2px;
-  border-radius: 2px;
 }
 ul.song-list li {
   zoom: 1;
@@ -138,23 +134,16 @@ ul.song-list li span.title {
 ul.song-list li span.origin {
   float: right;
 }
-.page,
-.search,
-.facebook-login {
-  padding: 6px 8px 8px 8px;
+.page-find h4 {
+  margin: 0px 0px 8px 0px;
 }
-.page form,
-.search form,
-.facebook-login form {
+.page-find form {
   margin: 0px;
 }
 .more a {
   display: block;
   padding: 6px 8px 8px 8px;
   text-align: center;
-}
-.facebook-invalid {
-  padding: 6px 8px 2px 8px;
 }
 #fb-button,
 input[type="text"] {

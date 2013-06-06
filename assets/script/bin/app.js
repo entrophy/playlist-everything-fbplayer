@@ -78,153 +78,134 @@
         }
       });
     });
-    app.controller('UserCtrl', function($scope) {
-      $scope.user = {};
-      return FB.Event.subscribe('auth.authResponseChange', function(response) {
-        if (response.status === "connected") {
-          return FB.api('/me', function(response) {
-            return $scope.$apply(function() {
-              return $scope.user = response;
-            });
+    app.controller('PageCtrl', function($scope, $rootScope, FBService) {
+      var _this = this;
+
+      $scope.url = '';
+      ($scope.resetVisibility = function() {
+        $scope.visible = {};
+        $scope.visible.all = true;
+        $scope.visible.invalid = false;
+        return $scope.visible.loading = false;
+      })();
+      $scope.selectPage = function() {
+        $scope.resetVisibility();
+        $scope.visible.loading = true;
+        FBService.setPageUrl($scope.url);
+        FBService.getPage(function(err, page) {
+          return $scope.$apply(function() {
+            $scope.visible.loading = false;
+            if (err === "invalid") {
+              return $scope.visible.invalid = true;
+            } else {
+              $scope.visible.all = false;
+              return $rootScope.$broadcast("selectPage", page);
+            }
           });
-        }
+        });
+        return false;
+      };
+      $scope.$on('select', function() {
+        $scope.resetVisibility();
+        return $scope.visible.all = false;
+      });
+      return $scope.$on('deselect', function() {
+        return $scope.resetVisibility();
       });
     });
-    app.controller('PageCtrl', function($scope) {
-      return $scope.page = [];
-    });
     app.controller('GroupCtrl', function($scope, $rootScope) {
-      $scope.group = null;
       $scope.groups = [];
-      $scope.test = 'no';
+      ($scope.resetVisibility = function() {
+        $scope.visible = {};
+        $scope.visible.all = true;
+        return $scope.visible.loading = false;
+      })();
       FB.Event.subscribe('auth.authResponseChange', function(response) {
         if (response.status === "connected") {
+          $scope.$apply(function() {
+            return $scope.visible.loading = true;
+          });
           return FB.api('/me/groups', function(response) {
             return $scope.$apply(function() {
+              $scope.visible.loading = false;
               return $scope.groups = response.data;
             });
           });
         }
       });
-      return $scope.select = function(group) {
+      $scope.selectGroup = function(group) {
+        $scope.visible.all = false;
         return $rootScope.$broadcast('selectGroup', group);
       };
-    });
-    app.controller('InfoCtrl', function($scope) {
-      $scope.title = '';
-      $scope.description = '';
-      return $scope.$on('selectGroup', function(event, group) {
-        $scope.title = group.name;
-        $scope.description = '';
-        return console.log("her");
+      $scope.$on('select', function() {
+        $scope.resetVisibility();
+        return $scope.visible.all = false;
+      });
+      return $scope.$on('deselect', function() {
+        return $scope.resetVisibility();
       });
     });
-    app.controller('QueueCtrl', function($scope) {});
-    app.controller('PlayerCtrl', function($scope) {});
-    app.controller('PageCtrl', function($scope, $http, $rootScope, $location, FBService, Queue) {
-      var _this = this;
-
-      console.log(" --> PageCtrl");
-      $scope.page = null;
-      $scope.url = $location.absUrl().split('/').pop();
-      ($scope.resetVisibility = function() {
-        $scope.visible = {};
-        $scope.visible.invalid = false;
-        $scope.visible["private"] = false;
-        $scope.visible.page = false;
-        $scope.visible.search = true;
-        return $scope.visible.loading = false;
-      })();
-      $scope.login = function() {
-        FB.login(function(response) {
-          console.log("here new:");
-          console.log(response);
-          if (response.status === "connected") {
-            return $scope.loadPage();
-          }
-        });
-        return false;
-      };
-      $scope.loadPage = function() {
-        $scope.resetVisibility();
-        $scope.visible.loading = true;
-        $scope.$apply();
-        FBService.setPageUrl($scope.url);
-        FBService.getPage(function(err, page) {
-          if (err === "invalid") {
-            $scope.visible.invalid = true;
-          } else if (err === "private") {
-            $scope.visible["private"] = true;
-          } else {
-            $scope.visible.search = false;
-            $scope.visible.page = true;
-            $scope.page = page;
-            $location.path(page.link.split('/').pop());
-            $location.replace();
-            $rootScope.$broadcast("loadPosts");
-          }
-          $scope.visible.loading = false;
-          return $scope.$apply();
-        });
-        return false;
-      };
-      return $scope.unloadPage = function() {
-        FBService.clear();
-        $scope.page = null;
-        $scope.resetVisibility();
-        $('#url-search').focus();
-        $rootScope.$broadcast("uploadPosts");
-        return false;
+    app.controller('InfoCtrl', function($scope, $rootScope) {
+      $scope.visible = false;
+      $scope.title = '';
+      $scope.description = '';
+      $scope.$on('selectGroup', function(event, group) {
+        $scope.title = group.name;
+        $scope.description = '';
+        $scope.visible = true;
+        return $rootScope.$broadcast('select');
+      });
+      $scope.$on('selectPage', function(event, page) {
+        $scope.title = page.name;
+        $scope.description = page.about;
+        $scope.visible = true;
+        return $rootScope.$broadcast('select');
+      });
+      return $scope.deselect = function() {
+        $scope.visible = false;
+        return $rootScope.$broadcast('deselect');
       };
     });
-    app.controller('SongCtrl', function($scope, $rootScope, FBService, Queue) {
-      var _this = this;
-
-      console.log(" --> SongCtrl");
-      $scope.songs = [];
+    app.controller('QueueCtrl', function($scope, FBService, Queue) {
       ($scope.resetVisibility = function() {
         $scope.visible = {};
+        $scope.visible.all = false;
         $scope.visible.loading = false;
         return $scope.visible.more = false;
       })();
+      $scope.songs = [];
       Queue.on('add', function(song) {
-        $scope.songs = Queue.getAllSongs();
-        return $scope.$apply();
+        return $scope.$apply(function() {
+          return $scope.songs = Queue.getAllSongs();
+        });
       });
-      $scope.$on('loadPosts', function() {
+      $scope.$on('selectPage', function(event, page) {
+        $scope.visible.all = true;
         return $scope.loadPosts();
       });
-      $scope.$on('uploadPosts', function() {
-        return $scope.unloadPosts();
-      });
-      $scope.loadPosts = function() {
+      return $scope.loadPosts = function() {
         var len;
 
         if (!$scope.visible.loading) {
           $scope.visible.more = false;
           $scope.visible.loading = true;
           len = $scope.songs.length;
-          FBService.getPosts(function(err, posts) {
-            var post, song, _i, _len;
+          return FBService.getPosts(function(err, posts) {
+            return $scope.$apply(function() {
+              var post, song, _i, _len;
 
-            for (_i = 0, _len = posts.length; _i < _len; _i++) {
-              post = posts[_i];
-              song = new Song(post);
-              if (song.playable) {
-                Queue.add(song);
+              for (_i = 0, _len = posts.length; _i < _len; _i++) {
+                post = posts[_i];
+                song = new Song(post);
+                if (song.playable) {
+                  Queue.add(song);
+                }
               }
-            }
-            $scope.visible.loading = false;
-            $scope.visible.more = len < $scope.songs.length;
-            return $scope.$apply();
+              $scope.visible.loading = false;
+              return $scope.visible.more = len < $scope.songs.length;
+            });
           });
         }
-        return false;
-      };
-      return $scope.unloadPosts = function() {
-        Queue.clear();
-        $scope.resetVisibility();
-        return false;
       };
     });
     app.controller('ControlsCtrl', function($scope, Queue) {
@@ -256,6 +237,7 @@
         return false;
       });
     });
+    app.controller('PlayerCtrl', function($scope) {});
     return angular.bootstrap(document, ['PlaylistEverythingFacebookPlayer']);
   };
 
