@@ -2,13 +2,13 @@
 	"name": "playlist-everything-fbplayer",
 	"version": "0.0.1",
 	"dependencies": {
-		"express": "x.x.x"
+		"express": "x.x.x",
+		"coffee-script": "x.x.x"
 	},
 	"devDependencies": {
 		"jade": "x.x.x",
 		"stylus": "x.x.x",
 		"nib": "x.x.x",
-		"coffee-script": "x.x.x",
 		"connect-coffee-script": "x.x.x"
 	}
 }

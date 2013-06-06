@@ -28,8 +28,6 @@ class @PlayerSoundcloud extends @PlayerAbstract
 			@_player.bind SC.Widget.Events.FINISH, callback
 
 	error: (callback) ->
-		if @_player
-			@_player.bind SC.Widget.Events.
 		@errorCallback = callback
 			
 	play: () ->

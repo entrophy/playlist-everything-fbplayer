@@ -1,1 +1,3 @@
-module.exports = require('./app/bin/app.js');
+require('coffee-script');
+
+module.exports = require('./app/app');

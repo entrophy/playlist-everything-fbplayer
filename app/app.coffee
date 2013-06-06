@@ -9,25 +9,25 @@ app = express()
 app.configure () ->
 
 	app.use('/script', coffeescript({
-		src: __dirname + '/../../assets/script/src',
-		dest: __dirname + '/../../assets/script/bin',
+		src: __dirname + '/../assets/script',
+		dest: __dirname + '/../assets/build/script',
 		bare: true
 	}))
 
 	app.use('/css', stylus.middleware({
-		src: __dirname + '/../../assets/stylus',
-		dest: __dirname + '/../../assets/css',
+		src: __dirname + '/../assets/stylus',
+		dest: __dirname + '/../assets/build/css',
 		compile: (str, path) ->
 			stylus(str).set('filename', path).set('compress', false).use(nib())
 	}))
 
 	app.engine('jade', jade.__express)
-	app.set('views', __dirname + '/../../assets/jade')
+	app.set('views', __dirname + '/../assets/jade')
 	app.set('view engine', 'jade')
 	
-	app.use('/script', express.static(__dirname + '/../../assets/script/bin'))
-	app.use('/css', express.static(__dirname + '/../../assets/css'))
-	app.use('/image', express.static(__dirname + '/../../assets/image'))
+	app.use('/script', express.static(__dirname + '/../assets/build/script'))
+	app.use('/css', express.static(__dirname + '/../assets/build/css'))
+	app.use('/image', express.static(__dirname + '/../assets/image'))
 
 app.get '/fb-channel', (req, res, next) ->
 	res.render('util/fb-channel')
