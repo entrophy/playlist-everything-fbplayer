@@ -23,22 +23,14 @@
     };
 
     FBService.prototype.getItemUrl = function() {
-      if (this.type === 'page') {
-        return this._url + '/posts';
-      } else if (this.type === 'group') {
-        return this._url + '/feed';
-      }
+      return this.url + '/feed';
     };
 
     FBService.prototype.getNextItemUrl = function() {
       if (this.nextUrl) {
         return this.nextUrl;
       } else {
-        if (this.type === 'page') {
-          return this.url + '/posts';
-        } else if (this.type === 'group') {
-          return this.url + '/feed';
-        }
+        return this.url + '/feed';
       }
     };
 
@@ -112,6 +104,7 @@
       items = [];
       return (function(r) {
         return FB.api(_this.getNextItemUrl(), function(response) {
+          console.log(response);
           if (r === _this.request) {
             if (response.error) {
               switch (response.error.code) {
@@ -127,6 +120,7 @@
                 _this.nextUrl = response.paging.next;
               }
               items = response.data;
+              console.log(items);
               return callback(err, items);
             }
           }
