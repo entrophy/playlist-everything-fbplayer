@@ -14,20 +14,12 @@
     }
 
     Queue.prototype.add = function(song) {
-      var callback, _i, _len, _ref, _results;
-
       this.songs.push(song);
       if (this.songs.length === 1) {
         this.playing = true;
         this.loadAndPlay();
       }
-      _ref = this.callbacks['add'] || [];
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        callback = _ref[_i];
-        _results.push(callback.call(this, song));
-      }
-      return _results;
+      return this.emit('add', [song]);
     };
 
     Queue.prototype.removeByIndex = function(index) {
@@ -98,6 +90,7 @@
             _this.player.finish(function() {
               return _this.next();
             });
+            _this.emit('change', [song, _this.index]);
           });
         }
       }
@@ -114,8 +107,9 @@
               return _this.next();
             });
             if (_this.isPlaying()) {
-              return _this.play();
+              _this.play();
             }
+            return _this.emit('change', [song, _this.index]);
           });
         }
       }
@@ -127,6 +121,18 @@
 
     Queue.prototype.on = function(event, callback) {
       return (this.callbacks[event] = this.callbacks[event] || []).push(callback);
+    };
+
+    Queue.prototype.emit = function(event, args) {
+      var callback, _i, _len, _ref, _results;
+
+      _ref = this.callbacks[event] || [];
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        callback = _ref[_i];
+        _results.push(callback.apply(this, args));
+      }
+      return _results;
     };
 
     Queue.prototype.getAllSongs = function() {

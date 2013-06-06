@@ -178,6 +178,7 @@ ready = () =>
 		)()
 
 		$scope.songs = []
+		$scope.current = 0
 
 		$scope.loadSongs = () ->
 			if !$scope.visible.loading # if not already loading
@@ -206,6 +207,10 @@ ready = () =>
 		Queue.on 'add', (song) ->
 			$scope.$apply () ->
 				$scope.songs = Queue.getAllSongs()
+
+		Queue.on 'change', (song, index) ->
+			$scope.$apply () ->
+				$scope.current = index
 			
 		$scope.$on 'selectPage', (event, page) ->
 			$scope.visible.all = true

@@ -17,8 +17,10 @@ class @Queue
 			@playing = true
 			@loadAndPlay()
 
-		for callback in @callbacks['add'] || []
-			callback.call(@, song)
+		@emit 'add', [song]
+
+		# for callback in @callbacks['add'] || []
+		# 	callback.call(@, song)
 
 	removeByIndex: (index) ->
 		console.log index
@@ -75,6 +77,8 @@ class @Queue
 					@player.finish () =>
 						@next()
 
+					@emit 'change', [song, @index]
+
 					return
 
 	loadAndPlay: () ->
@@ -87,11 +91,17 @@ class @Queue
 					if @isPlaying()
 						@play()
 
+					@emit 'change', [song, @index]
+
 	isPlaying: () ->
 		return @playing
 
 	on: (event, callback) ->
 		(@callbacks[event] = @callbacks[event] || []).push(callback)
+
+	emit: (event, args) ->
+		for callback in @callbacks[event] || []
+			callback.apply(@, args)
 
 	getAllSongs: () ->
 		@songs

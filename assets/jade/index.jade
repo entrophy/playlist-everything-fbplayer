@@ -65,7 +65,7 @@ html
 
 								div(data-ng-controller="QueueCtrl")
 									ul.song-list
-										li(data-ng-repeat="song in songs")
+										li(data-ng-repeat="song in songs", data-ng-class="{ current: $index == current }")
 											a.play(href="", data-ng-click="play($index)")
 												i.icon-play
 											span.title(data-ng-bind="song.title")

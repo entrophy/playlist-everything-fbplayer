@@ -178,6 +178,7 @@
         return $scope.visible.more = false;
       })();
       $scope.songs = [];
+      $scope.current = 0;
       $scope.loadSongs = function() {
         var len;
 
@@ -211,6 +212,11 @@
       Queue.on('add', function(song) {
         return $scope.$apply(function() {
           return $scope.songs = Queue.getAllSongs();
+        });
+      });
+      Queue.on('change', function(song, index) {
+        return $scope.$apply(function() {
+          return $scope.current = index;
         });
       });
       $scope.$on('selectPage', function(event, page) {
