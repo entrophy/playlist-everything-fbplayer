@@ -45,13 +45,11 @@ class @FBService
 
 		if @getPageUrl()
 			FB.api @getPostUrl(), (response) =>
-				console.log response
 				if response.error
 					switch response.error.code
 						when 803 then err = "invalid"
 						else err = "private"
 
-					console.log "HER FØRST"
 					callback(err, page)
 				else
 					FB.api @getPageUrl(), (response) =>
@@ -64,7 +62,6 @@ class @FBService
 						else
 							page = response
 
-							console.log "HER BAGEFTER"
 							callback(err, page)
 
 	getPosts: (callback) ->
@@ -72,7 +69,6 @@ class @FBService
 		posts = []
 
 		FB.api @getNextPostUrl() , (response) =>
-			console.log response
 			if response.error
 				switch response.error.code
 					when 803 then err = "invalid"
@@ -80,7 +76,6 @@ class @FBService
 
 				callback(err, posts)
 			else
-				console.log response.paging
 				if (response.paging)
 					@_nextUrl = response.paging.next
 

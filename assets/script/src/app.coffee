@@ -167,9 +167,13 @@ ready = () =>
 				len = $scope.songs.length
 
 				FBService.getPosts (err, posts) ->
+					console.log posts
+
 					for post in posts
 						song = new Song(post)
 
+						###console.log post.caption
+						console.log song###
 						if song.playable
 							Queue.add(song)
 

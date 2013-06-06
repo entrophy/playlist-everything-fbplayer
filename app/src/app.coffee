@@ -39,7 +39,5 @@ app.get '/player', cors, (req, res, next) ->
 app.get '*', cors, (req, res, next) ->
 	res.render('index')
 
-app.listen (process.env.VCAP_APP_PORT || 80), () ->
-	console.log "listening on port " + (process.env.VCAP_APP_PORT || 80)
-
-		
+app.listen (process.env.VCAP_APP_PORT || 3000), () ->
+	console.log "listening on port " + (process.env.VCAP_APP_PORT || 3000)
