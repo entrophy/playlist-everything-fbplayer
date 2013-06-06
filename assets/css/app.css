@@ -5,10 +5,23 @@ body {
 body {
   background: url("/image/backgrounds/crowd-blur.jpg") center fixed;
   overflow-y: scroll;
+  font-family: "Ubuntu", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
-#facebook-login .box {
-  padding: 0px 0px 20px 0px;
+a {
+  color: #333;
+}
+a:hover,
+a:focus {
+  color: #000;
+  text-decoration: none;
+}
+#facebook-login .box-facebook {
+  padding: 50px 0px 0px 0px;
+  position: absolute;
   text-align: center;
+  height: 142px;
+  margin-top: -71px;
+  top: 45%;
 }
 #app-wrapper {
   padding-bottom: 260px;
@@ -76,7 +89,7 @@ body {
   background: url("/image/preloader.gif");
   height: 48px;
   width: 48px;
-  top: 50%;
+  top: 45%;
   left: 50%;
   margin-top: -24px;
   margin-left: -24px;
@@ -108,10 +121,15 @@ ul.box-list {
   padding: 0px;
   list-style-type: none;
 }
-ul.box-list li {
+ul.box-list li a {
+  display: block;
   background: rgba(255,255,255,0.6);
   margin: 0px 0px 2px 0px;
   padding: 8px;
+}
+ul.box-list li a:hover,
+ul.box-list li a:focus {
+  background: rgba(225,225,225,0.6);
 }
 ul.song-list {
   margin: 0px;
@@ -157,6 +175,10 @@ ul.song-list li .play {
   width: 40px;
   text-align: center;
 }
+ul.song-list li .play:hover,
+ul.song-list li .play:focus {
+  background: rgba(225,225,225,0.6);
+}
 ul.song-list li .origin {
   position: absolute;
   top: 0;
@@ -164,18 +186,37 @@ ul.song-list li .origin {
   width: 120px;
   text-align: center;
 }
+ul.song-list li .origin:hover,
+ul.song-list li .origin:focus {
+  background: rgba(225,225,225,0.6);
+}
 .box-page h4 {
   margin: 0px 0px 8px 0px;
 }
 .box-page form {
   margin: 0px;
 }
-.box-info p {
-  margin: 0px;
+.box-page form .controls {
+  position: relative;
 }
-.more a {
+.box-page form .controls .input {
+  margin-right: 55px;
+}
+.box-page form .controls .btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.box-info p {
+  margin: 6px 0px 0px 0px;
+}
+a.more {
   display: block;
   text-align: center;
+}
+a.more:hover,
+a.more:focus {
+  background: rgba(225,225,225,0.6);
 }
 input[type="text"] {
   -webkit-border-radius: 0px;
@@ -198,8 +239,8 @@ input[type="text"]:focus {
   border: 0px;
   -webkit-box-shadow: none;
   box-shadow: none;
-  padding: 8px 12px;
-  margin: 1px 0px;
+  padding: 9px 12px;
+  margin: 0px 0px;
 }
 .btn.btn-large,
 .btn-primary.btn-large,

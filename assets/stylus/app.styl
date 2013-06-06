@@ -7,10 +7,23 @@ body
 	background: url('/image/backgrounds/crowd-blur.jpg') center fixed
 	overflow-y: scroll
 
+	font-family: "Ubuntu", "Helvetica Neue", Helvetica, Arial, sans-serif
+
+a
+	color: #333
+
+	&:hover, &:focus
+		color: #000
+		text-decoration: none
+
 #facebook-login
-	.box
-		padding: 0px 0px 20px 0px
+	.box-facebook
+		padding: 50px 0px 0px 0px
+		position: absolute
 		text-align: center
+		height: 142px
+		margin-top: -71px
+		top: 45%
 
 #app-wrapper
 	padding-bottom: 260px
@@ -75,7 +88,7 @@ body
 	background: url('/image/preloader.gif')
 	height: 48px
 	width: 48px
-	top: 50%
+	top: 45%
 	left: 50%
 	margin-top: -24px
 	margin-left: -24px
@@ -105,9 +118,14 @@ ul.box-list
 	list-style-type: none
 
 	li 
-		background: rgba(255, 255, 255, 0.6)
-		margin: 0px 0px 2px 0px
-		padding: 8px
+		a
+			display: block
+			background: rgba(255, 255, 255, 0.6)
+			margin: 0px 0px 2px 0px
+			padding: 8px
+
+			&:hover, &:focus
+				background: rgba(225, 225, 225, 0.6)
 
 ul.song-list
 	margin: 0px
@@ -143,12 +161,18 @@ ul.song-list
 			width: 40px
 			text-align: center
 
+			&:hover, &:focus
+				background: rgba(225, 225, 225, 0.6)
+
 		.origin
 			position: absolute
 			top: 0
 			right: 0
 			width: 120px
 			text-align: center
+
+			&:hover, &:focus
+				background: rgba(225, 225, 225, 0.6)
 
 .box-page
 	h4
@@ -157,13 +181,27 @@ ul.song-list
 	form
 		margin: 0px
 
+		.controls
+			position: relative
+
+			.input
+				margin-right: 55px
+
+			.btn
+				position: absolute
+				top: 0
+				right: 0
+
 .box-info
 	p
-		margin: 0px
+		margin: 6px 0px 0px 0px
 
-.more a
+a.more
 	display: block
 	text-align: center
+
+	&:hover, &:focus
+		background: rgba(225, 225, 225, 0.6)
 
 input[type="text"]
 	border-radius 0px
@@ -180,8 +218,8 @@ input[type="text"]
 .btn, .btn-primary, .btn-success
 	border: 0px
 	box-shadow: none
-	padding: 8px 12px
-	margin: 1px 0px
+	padding: 9px 12px
+	margin: 0px 0px
 
 	&.btn-large
 		padding: 11px 19px
@@ -200,6 +238,3 @@ input[type="text"]
 	background: rgba(81, 163, 81, 0.8)
 	&:hover
 		background: rgba(81, 163, 81, 0.9)
-
-
-

@@ -19,9 +19,6 @@ class @Queue
 
 		@emit 'add', [song]
 
-		# for callback in @callbacks['add'] || []
-		# 	callback.call(@, song)
-
 	removeByIndex: (index) ->
 		console.log index
 		@songs.splice(index, 1)
@@ -39,7 +36,6 @@ class @Queue
 		@loadAndPlay()
 
 	pause: () ->
-		console.log "PAUSING"
 		@playing = false
 
 		if @player
