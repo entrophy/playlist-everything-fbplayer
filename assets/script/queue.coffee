@@ -76,8 +76,11 @@ class @Queue
 					@player.finish () =>
 						@next()
 
+					@emit 'change', [@index]
+
 					if @index == @songs.length - 1
 						@emit 'last'
+
 
 					return
 
@@ -93,6 +96,8 @@ class @Queue
 
 					if @isPlaying()
 						@play()
+
+					@emit 'change', [@index]
 
 					if @index == @songs.length - 1
 						@emit 'last'
@@ -115,6 +120,8 @@ class @Queue
 
 	clear: () ->
 		@removeAll()
+		@index = 0
+		@playing = false
 
 		if @player
 			@player.destroy()
