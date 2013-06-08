@@ -4,6 +4,7 @@
     function Queue() {
       var player;
 
+      console.log("QUEUE constructor");
       this.songs = [];
       this.callbacks = [];
       this.index = 0;
@@ -17,6 +18,7 @@
       this.songs.push(song);
       if (this.songs.length === 1) {
         this.playing = true;
+        this.emit('play', []);
         this.loadAndPlay();
       }
       return this.emit('add', [song]);
@@ -29,6 +31,7 @@
 
     Queue.prototype.play = function() {
       this.playing = true;
+      this.emit('play', []);
       if (this.player) {
         return this.player.play();
       }
@@ -39,11 +42,13 @@
       this.index = index;
       this.emit('change', [this.index]);
       this.playing = true;
+      this.emit('play', []);
       return this.loadAndPlay();
     };
 
     Queue.prototype.pause = function() {
       this.playing = false;
+      this.emit('pause', []);
       if (this.player) {
         return this.player.pause();
       }
@@ -59,8 +64,19 @@
       }
     };
 
+    Queue.prototype.playOrPauseByIndex = function(index) {
+      if (this.player) {
+        if (this.isPlaying()) {
+          return this.pause();
+        } else {
+          return this.playByIndex(index);
+        }
+      }
+    };
+
     Queue.prototype.stop = function() {
       this.playing = false;
+      this.emit('stop', []);
       if (this.player) {
         return this.player.stop();
       }
@@ -92,7 +108,7 @@
             _this.player.finish(function() {
               return _this.next();
             });
-            _this.emit('change', [_this.index]);
+            _this.emit('load', [_this.index]);
             if (_this.index === _this.songs.length - 1) {
               _this.emit('last');
             }
@@ -117,7 +133,7 @@
             if (_this.isPlaying()) {
               _this.play();
             }
-            _this.emit('change', [_this.index]);
+            _this.emit('load', [_this.index]);
             if (_this.index === _this.songs.length - 1) {
               return _this.emit('last');
             }
@@ -160,6 +176,7 @@
       this.removeAll();
       this.index = 0;
       this.playing = false;
+      this.emit('stop', []);
       if (this.player) {
         return this.player.destroy();
       }

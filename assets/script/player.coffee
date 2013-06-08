@@ -47,3 +47,4 @@ class @Player extends @PlayerAbstract
 	destroy: () ->
 		if @_player
 			@_player.destroy()
+			@_player = null

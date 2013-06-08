@@ -13,7 +13,6 @@ class @FBService
 		@url = @url.split('?')
 		@url = @url.shift()
 
-
 	getUrl: () ->
 		@url
 

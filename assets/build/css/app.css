@@ -150,11 +150,13 @@ ul.song-list li:after {
   clear: both;
 }
 ul.song-list li.current .play,
+ul.song-list li.current .pause,
 ul.song-list li.current .title,
 ul.song-list li.current .origin {
   background: rgba(175,175,175,0.6);
 }
 ul.song-list li .play,
+ul.song-list li .pause,
 ul.song-list li .title,
 ul.song-list li .origin {
   background: rgba(255,255,255,0.6);
@@ -168,7 +170,8 @@ ul.song-list li .title {
   overflow: hidden;
   white-space: nowrap;
 }
-ul.song-list li .play {
+ul.song-list li .play,
+ul.song-list li .pause {
   position: absolute;
   top: 0;
   left: 0;
@@ -176,7 +179,9 @@ ul.song-list li .play {
   text-align: center;
 }
 ul.song-list li .play:hover,
-ul.song-list li .play:focus {
+ul.song-list li .pause:hover,
+ul.song-list li .play:focus,
+ul.song-list li .pause:focus {
   background: rgba(225,225,225,0.6);
 }
 ul.song-list li .origin {

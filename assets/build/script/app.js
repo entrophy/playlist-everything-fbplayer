@@ -157,8 +157,6 @@
       });
       $scope.selectGroup = function(group) {
         $scope.visible.all = false;
-        FBService.setType('group');
-        FBService.setUrl(group.id);
         return $rootScope.$broadcast('selectGroup', group);
       };
       $scope.$on('select', function() {
@@ -199,6 +197,8 @@
       })();
       $scope.songs = [];
       $scope.current = 0;
+      $scope.playing = false;
+      $scope.last = null;
       $scope.loadSongs = function() {
         var len;
 
@@ -229,13 +229,31 @@
       $scope.pause = function() {
         return Queue.pause();
       };
+      Queue.on('play', function() {
+        return $scope.playing = true;
+      });
+      Queue.on('pause', function() {
+        return $scope.playing = false;
+      });
+      Queue.on('stop', function() {
+        return $scope.playing = false;
+      });
       Queue.on('add', function(song) {
         return $scope.$apply(function() {
           return $scope.songs = Queue.getAllSongs();
         });
       });
       Queue.on('change', function(index) {
-        return $scope.current = index;
+        return setTimeout(function() {
+          return $scope.$apply(function() {
+            return $scope.current = index;
+          });
+        }, 1);
+      });
+      Queue.on('load', function(index) {
+        return $scope.$apply(function() {
+          return $scope.current = index;
+        });
       });
       Queue.on('last', function() {
         return $scope.$apply(function() {
@@ -243,20 +261,28 @@
         });
       });
       $scope.$on('selectPage', function(event, page) {
-        $scope.visible.all = true;
-        return $scope.loadSongs();
+        return $scope.select(page, 'page');
       });
       $scope.$on('selectGroup', function(event, group) {
-        $scope.visible.all = true;
-        return $scope.loadSongs();
+        return $scope.select(group, 'group');
       });
-      return $scope.$on('deselect', function(event) {
-        $scope.resetVisibility();
-        Queue.clear();
-        return FBService.clear();
-      });
+      return $scope.select = function(obj, type) {
+        if ($scope.last === null || $scope.last.id !== obj.id) {
+          $scope.resetVisibility();
+          $scope.visible.all = true;
+          $scope.current = 0;
+          $scope.songs.length = 0;
+          Queue.clear();
+          FBService.clear();
+          FBService.setType(type);
+          FBService.setUrl(obj.id);
+          $scope.loadSongs();
+          return $scope.last = obj;
+        }
+      };
     });
     app.controller('ControlsCtrl', function($scope, Queue) {
+      $scope.playing = false;
       $scope.visible = false;
       $scope.play = function() {
         return Queue.play();
@@ -288,8 +314,14 @@
       $scope.$on('select', function(event) {
         return $scope.visible = true;
       });
-      return $scope.$on('deselect', function(event) {
-        return $scope.visible = false;
+      Queue.on('play', function() {
+        return $scope.playing = true;
+      });
+      Queue.on('pause', function() {
+        return $scope.playing = false;
+      });
+      return Queue.on('stop', function() {
+        return $scope.playing = false;
       });
     });
     return angular.bootstrap(document, ['PlaylistEverythingFacebookPlayer']);

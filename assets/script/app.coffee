@@ -142,10 +142,8 @@ ready = () =>
 
 
 		$scope.selectGroup = (group) ->
-			$scope.visible.all = false
 
-			FBService.setType('group')
-			FBService.setUrl(group.id)
+			$scope.visible.all = false
 
 			$rootScope.$broadcast 'selectGroup', group
 
@@ -193,6 +191,8 @@ ready = () =>
 
 		$scope.songs = []
 		$scope.current = 0
+		$scope.playing = false
+		$scope.last = null
 
 		$scope.loadSongs = () ->
 			if !$scope.visible.loading # if not already loading
@@ -218,31 +218,59 @@ ready = () =>
 		$scope.pause = () ->
 			Queue.pause()
 
+		Queue.on 'play', () ->
+			$scope.playing = true
+
+		Queue.on 'pause', () ->
+			$scope.playing = false
+
+		Queue.on 'stop', () ->
+			$scope.playing = false
+
 		Queue.on 'add', (song) ->
 			$scope.$apply () ->
 				$scope.songs = Queue.getAllSongs()
 
 		Queue.on 'change', (index) ->
-			$scope.current = index
+			setTimeout () ->
+				$scope.$apply () ->
+					$scope.current = index
+			, 1
+
+		Queue.on 'load', (index) ->
+			$scope.$apply () ->
+				$scope.current = index
 
 		Queue.on 'last', () ->
 			$scope.$apply () ->
 				$scope.loadSongs()
 			
 		$scope.$on 'selectPage', (event, page) ->
-			$scope.visible.all = true
-			$scope.loadSongs()
+			$scope.select(page, 'page')
 
 		$scope.$on 'selectGroup', (event, group) ->
-			$scope.visible.all = true
-			$scope.loadSongs()
+			$scope.select(group, 'group')
 
-		$scope.$on 'deselect', (event) ->
-			$scope.resetVisibility()
-			Queue.clear()
-			FBService.clear()
+		$scope.select = (obj, type) ->
+			if $scope.last == null || $scope.last.id != obj.id
+				$scope.resetVisibility()
+				$scope.visible.all = true
+
+				$scope.current = 0
+				$scope.songs.length = 0
+
+				Queue.clear()
+				FBService.clear()
+
+				FBService.setType(type)
+				FBService.setUrl(obj.id)
+
+				$scope.loadSongs()
+
+				$scope.last = obj
 
 	app.controller 'ControlsCtrl', ($scope, Queue) ->
+		$scope.playing = false
 		$scope.visible = false
 
 		$scope.play = () ->
@@ -275,7 +303,16 @@ ready = () =>
 		$scope.$on 'select', (event) ->
 			$scope.visible = true
 
-		$scope.$on 'deselect', (event) ->
-			$scope.visible = false
+		Queue.on 'play', () ->
+			$scope.playing = true
+
+		Queue.on 'pause', () ->
+			$scope.playing = false
+
+		Queue.on 'stop', () ->
+			$scope.playing = false
+
+		# $scope.$on 'deselect', (event) ->
+		# 	$scope.visible = false
 
 	angular.bootstrap(document, ['PlaylistEverythingFacebookPlayer'])

@@ -1,5 +1,6 @@
 class @Queue
 	constructor: () ->
+		console.log "QUEUE constructor"
 		@songs = []
 		@callbacks = []
 		@index = 0
@@ -15,6 +16,7 @@ class @Queue
 
 		if @songs.length == 1
 			@playing = true
+			@emit 'play', []
 			@loadAndPlay()
 
 		@emit 'add', [song]
@@ -25,6 +27,7 @@ class @Queue
 
 	play: () ->
 		@playing = true
+		@emit 'play', []
 
 		if @player
 			@player.play()
@@ -34,10 +37,12 @@ class @Queue
 		@index = index
 		@emit 'change', [@index]
 		@playing = true
+		@emit 'play', []
 		@loadAndPlay()
 
 	pause: () ->
 		@playing = false
+		@emit 'pause', []
 
 		if @player
 			@player.pause()
@@ -49,8 +54,16 @@ class @Queue
 			else
 				@play()
 
+	playOrPauseByIndex: (index) ->
+		if @player
+			if @isPlaying()
+				@pause()
+			else
+				@playByIndex(index)
+
 	stop: () ->
 		@playing = false
+		@emit 'stop', []
 
 		if @player
 			@player.stop()
@@ -76,11 +89,10 @@ class @Queue
 					@player.finish () =>
 						@next()
 
-					@emit 'change', [@index]
+					@emit 'load', [@index]
 
 					if @index == @songs.length - 1
 						@emit 'last'
-
 
 					return
 
@@ -97,7 +109,7 @@ class @Queue
 					if @isPlaying()
 						@play()
 
-					@emit 'change', [@index]
+					@emit 'load', [@index]
 
 					if @index == @songs.length - 1
 						@emit 'last'
@@ -122,6 +134,7 @@ class @Queue
 		@removeAll()
 		@index = 0
 		@playing = false
+		@emit 'stop', []
 
 		if @player
 			@player.destroy()

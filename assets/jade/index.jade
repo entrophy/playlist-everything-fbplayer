@@ -74,8 +74,10 @@ html
 								div(data-ng-controller="QueueCtrl")
 									ul.song-list
 										li(data-ng-repeat="song in songs", data-ng-class="{ current: $index == current }")
-											a.play(href="", data-ng-click="play($index)")
+											a.play(href="", data-ng-click="play($index)", data-ng-show="!playing || $index != current")
 												i.icon-play
+											a.pause(href="", data-ng-click="pause($index)", data-ng-show="playing && $index == current")
+												i.icon-pause
 											span.title(data-ng-bind="song.title")
 											a.origin(href="{{song.link}}", data-ng-click="pause()", target="_blank", data-ng-bind="song.origin")
 
@@ -91,9 +93,9 @@ html
 								#buttons
 									a.btn.btn-large(data-ng-click="prev()")
 										i.icon-fast-backward
-									a.btn.btn-large(data-ng-click="play()")
+									a.btn.btn-large(data-ng-click="play()", data-ng-show="!playing")
 										i.icon-play
-									a.btn.btn-large(data-ng-click="pause()")
+									a.btn.btn-large(data-ng-click="pause()", data-ng-show="playing")
 										i.icon-pause
 									a.btn.btn-large(data-ng-click="stop()")
 										i.icon-stop
